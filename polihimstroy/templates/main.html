@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Полихимстрой</title>
+  	{% load staticfiles %}
+    <!-- <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"> -->
+  	<link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation-icons/foundation-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+  {% block content %}
+  {% endblock %}
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/foundation.js' %}"></script>
+  <script src="{% static 'js/foundation.equalizer.js' %}"></script>
+  <script src="{% static 'js/foundation.dropdown.js' %}"></script>
+  <!--<script src="{% static 'js/foundation.topbar.js' %}"></script>-->
+  <script src="{% static 'js/foundation.tooltip.js' %}"></script>
+  <script src="{% static 'js/foundation.orbit.js' %}"></script>
+  <script src="{% static 'js/foundation.magellan.js' %}"></script>
+  <!--<script src="{% static 'js/foundation.alert.js' %}"></script>-->
+  <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'js/imagesloaded.pkgd.js' %}"></script>
+  <script src="{% static 'js/mustache.js' %}"></script>
+  <script src="{% static 'js/foundation-datepicker.js' %}"></script>
+  <script src="{% static 'js/jquery.visible.min.js' %}"></script>
+  <script src="{% static 'js/foundation.reveal.js' %}"></script>
+  <script src="{% static 'js/application.js' %}"></script>
+  <script src="{% static 'js/jquery.scrollintoview.min.js' %}"></script>
+</body>
