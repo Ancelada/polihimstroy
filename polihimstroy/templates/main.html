@@ -2,31 +2,89 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+  <meta content="user-scalable=no" name="viewport">
 	<title>Полихимстрой</title>
   	{% load staticfiles %}
     <!-- <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"> -->
-  	<link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <!-- <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/foundation.core.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
     <link rel="stylesheet" href="{% static 'css/foundation-icons/foundation-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.css' %}"> -->
+    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/foundation/foundation.core.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/attrchange.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/foundation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation-icons/foundation-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/foundation-datepicker.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head>
 <body>
-  {% block content %}
-  {% endblock %}
-  <script src="{% static 'js/jquery.min.js' %}"></script>
+
+  <div class="reveal" id="loading" data-reveal style="position:absolute;">
+    <div class="progress" role="progressbar" tabindex="0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-meter" style="width:0;"></div>
+    </div>
+  </div>
+
+  <div class="large reveal" id="paragraph_content" data-reveal data-close-on-click="true" data-animation-in="spin-in" data-animation-out="spin-out">
+    {{greatings}}    
+  </div>
+
+  <div id="backgroundimage" style="display:none;"></div>
+  <div class="header">
+    <div id="page_head" class="large-12 small-12 columns" style="display:none;">
+      <h1 id="page_text">ткз полихимстрой</h1>
+    </div>
+  </div>
+  <div class="row content">
+      {% block content %}
+      {% endblock %}  
+  </div>
+  <script src="{% static 'js/jscolor.min.js'%}"></script>
+  <!-- <script src="{% static 'js/vendor/foundation.reveal.js' %}"></script> -->
+  <script src="{% static 'js/foundation/foundation.reveal.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.util.keyboard.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.util.box.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.util.triggers.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.util.mediaQuery.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.util.motion.js' %}"></script>
   <script src="{% static 'js/foundation.js' %}"></script>
+  <!-- <script src="{% static 'js/vendor/foundation.magellan.js' %}"></script>
+  <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.slider.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.tabs.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.util.timerAndImageLoader.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.drilldown.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.util.motion.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.util.nest.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.util.mediaQuery.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.accordionMenu.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.dropdownMenu.js' %}"></script> -->
+
+  <script src="{% static 'js/foundation/foundation-datepicker.min.js' %}"></script>
+  <script src="{% static 'js/foundation/locales/foundation-datepicker.ru.js' %}"></script>
+  <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+  <script src="{% static 'js/imagesloaded.pkgd.js' %}"></script>
+  <!--<script src="{% static 'js/foundation.js' %}"></script>
+  <script src="{% static 'js/foundation.reveal.js' %}"></script>
   <script src="{% static 'js/foundation.equalizer.js' %}"></script>
   <script src="{% static 'js/foundation.dropdown.js' %}"></script>
-  <!--<script src="{% static 'js/foundation.topbar.js' %}"></script>-->
+  <script src="{% static 'js/foundation.topbar.js' %}"></script>
   <script src="{% static 'js/foundation.tooltip.js' %}"></script>
   <script src="{% static 'js/foundation.orbit.js' %}"></script>
   <script src="{% static 'js/foundation.magellan.js' %}"></script>
-  <!--<script src="{% static 'js/foundation.alert.js' %}"></script>-->
+  <script src="{% static 'js/foundation.alert.js' %}"></script>
   <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
   <script src="{% static 'js/imagesloaded.pkgd.js' %}"></script>
   <script src="{% static 'js/mustache.js' %}"></script>
   <script src="{% static 'js/foundation-datepicker.js' %}"></script>
   <script src="{% static 'js/jquery.visible.min.js' %}"></script>
-  <script src="{% static 'js/foundation.reveal.js' %}"></script>
+  <script src="{% static 'js/jquery.scrollintoview.min.js' %}"></script>-->
+  <script>
+    $(document).foundation();
+  </script>
   <script src="{% static 'js/application.js' %}"></script>
-  <script src="{% static 'js/jquery.scrollintoview.min.js' %}"></script>
+  
+  
 </body>

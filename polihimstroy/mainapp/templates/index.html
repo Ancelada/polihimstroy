@@ -1,5 +1,22 @@
-{% extends 'main.html' %}
+	<div class="large-12 small-12 colums" id="precontent">
+      
+  </div>
+  <div id="maincontent" class="large-12 small-12 columns" style="display:none;">
+	{% for p in Paragraph %}
+		<a class="a_paragraph_item">
+			<div class="large-4 small-4 columns float-left paragraph">
+				<div class="large-12 small-12 columns paragraph_content">
+					<div id="paragraph_name">
+						<h3>{{p.Name|capfirst}}</h3>					
+					</div>
+					<div class="paragraph_background grayscale large-12 small-12 columns" style="background:url(/media/{{p.Image}}) center 0 no-repeat;">
 
-{% block content %}
-asfa;d
-{% endblock %}
+					</div>
+				</div>
+			</div>
+		</a>
+	{% endfor %}
+	<div class="large-12 small-12 colums float-left" style="height:100px;">
+      
+  </div>
+	</div>

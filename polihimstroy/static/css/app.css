@@ -5,4 +5,117 @@ body{
 	display:block;
 	width:100%;
 	min-height:100%;
+	overflow-y:scroll; 
+}
+
+#backgroundimage{
+	position:absolute;
+	top:0;
+	left:0;
+	display:block;
+	width:100%;
+	height:100%;
+	background: url(/media/polihimstroy.jpg) center 0 no-repeat fixed;
+	background-size:cover;
+	z-index:-1;
+}
+.reveal{
+	position: absolute;
+}
+
+#page_head{
+	position:absolute;
+	top:0;
+	height:100px;
+	background-color:rgba(0, 140, 186, .8);
+	z-index:1;
+	color:#fff;
+}
+#page_text{
+	margin-top:15px;
+	text-transform: uppercase;
+}
+.header{
+	display:block;
+	position:absolute;
+	top:0;
+	width: 100%;
+}
+
+.content{
+	z-index:1;
+	height:100%;
+	overflow:hidden;
+}
+#precontent{
+	height: 100px;
+}
+
+#maincontent{
+	background-color:rgba(255, 255, 255, .5);
+	height: 100%;
+	overflow-y:scroll;
+}
+.paragraph{
+	overflow: hidden;
+	margin:0;
+	padding:0;
+}
+
+.grayscale{
+	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+	filter: gray;
+	transition: all .6s ease;
+	-moz-transition: all .6s ease-in-out;
+	-webkit-transition: all .6s ease;
+	-webkit-filter: grayscale(100%);
+	-webkit-backface-visibility: hidden;
+}
+
+.paragraph_background.grayscale:hover {
+	filter: none;
+	-webkit-filter: grayscale(0%);
+}
+
+.paragraph_background{
+	margin:0;
+	padding:0;
+	position:relative;
+	display:block;
+	height: 350px;
+/* 	width:350px; */
+	background-size:cover;
+	transition: all .6s ease;
+	-moz-transition: all .6s ease-in-out;
+	-webkit-transition: all .6s ease;
+}
+
+.paragraph_background:hover{
+	opacity: 1;
+}
+
+#paragraph_name h3{
+	top:50%;
+	background-color:rgba(0, 140, 186, .8);
+	color:#fff;
+	height: 100px;
+}
+
+#paragraph_name{
+	text-align: center;
+	height: 0px;
+	display:block;
+	position:relative;
+	z-index: 1;
+	width:104%;
+	left:-2%;
+	top:140px;
+	/* transition: all .6s ease;
+	-moz-transition: all .6s ease-in-out;
+	-webkit-transition: all .6s ease;
+	-o-transition: all .6s ease; */
+}
+
+.paragraph_content{
+	margin-top:30px;
 }

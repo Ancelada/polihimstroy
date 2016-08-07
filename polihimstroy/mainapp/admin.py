@@ -6,6 +6,7 @@ from mainapp.models import *
 class ParagraphAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Наименование', {'fields': ['Name']}),
+		('картинка', {'fields': ['Image']}),
 	]
 
 class UnitAdmin(admin.ModelAdmin):

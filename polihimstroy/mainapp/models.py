@@ -13,6 +13,7 @@ class Paragraph(models.Model):
 	class Meta():
 		db_table = 'Paragraph'
 	Name = models.CharField(max_length=200, null=True, blank=True)
+	Image = models.ImageField(blank=True, null=True)
 	def __str__(self):
 		return self.Name.encode('utf-8')
 
