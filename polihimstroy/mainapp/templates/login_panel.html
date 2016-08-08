@@ -1,0 +1,9 @@
+{% if username.id %}
+	Баланс: {{balance}} EUR
+	/
+	Пользователь: "{{username.username}}"
+	/
+	<a id="logout">Выйти</a>
+{% else %}
+	<a id="login"><h6>Войти</h6></a>
+{% endif %}

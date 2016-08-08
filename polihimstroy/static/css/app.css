@@ -1,3 +1,10 @@
+a{
+	color:#fff;
+}
+a:hover{
+	color:#fff;
+}
+
 body{
 	position:absolute;
 	top:0;
@@ -32,8 +39,17 @@ body{
 	color:#fff;
 }
 #page_text{
+	display:inline-block;
 	margin-top:15px;
 	text-transform: uppercase;
+}
+
+#login_panel{
+	display:inline-block;
+	position:relative;
+	max-width: 40%;
+	margin-top:49px;
+	margin-right: 15px;
 }
 .header{
 	display:block;
@@ -118,4 +134,65 @@ body{
 
 .paragraph_content{
 	margin-top:30px;
+}
+
+#goto_previous{
+	display:block;
+	color:#fff;
+	background-color:rgba(0,0,0, .5);
+	position:fixed;
+	bottom:0;
+	height:40px;
+	width:180px;
+	z-index:1;
+}
+
+#notification_panel{
+	position:fixed;
+	right:0;
+	bottom:0;
+	display:block;
+	z-index:2;
+	width:400px;
+	min-height:0px;
+}
+
+.notification_unit{
+	position:relative;
+	display:block;
+	width: 100%;
+	min-height:120px;
+	color: #fff;
+}
+
+.notification_header{
+	margin:15px;
+}
+
+.notification_text{
+	margin: 15px;
+}
+
+.close-button{
+	color:#fff;
+}
+
+.close-button:hover{
+	color:#fff;
+}
+
+.alert{
+	background-color: rgba(232, 63, 111, .8);
+}
+
+.success{
+	background-color: rgba(0, 155, 114, .8);
+}
+
+#greatings_close{
+	color:#000;
+}
+
+#greations_close:hover{
+	color:#000;
 }
