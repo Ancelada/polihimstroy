@@ -25,6 +25,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^$', views.index, name='index'),
-    url(ur'^login/(?P<url>[а-яА-ЯёЁA-Za-z0-9_\/ _+.,-]+)/$', 'login.views.login'),
-    url(ur'^logout/(?P<url>[а-яА-ЯёЁA-Za-z0-9_\/ _+.,-]+)/$', 'login.views.logout'),
 ]

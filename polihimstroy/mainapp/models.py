@@ -14,6 +14,9 @@ class Paragraph(models.Model):
 		db_table = 'Paragraph'
 	Name = models.CharField(max_length=200, null=True, blank=True)
 	Image = models.ImageField(blank=True, null=True)
+	Large = models.NullBooleanField(blank=True, null=True)
+	No = models.IntegerField(blank=True, null=True)
+	AlignLeft = models.NullBooleanField(blank=True, null=True)
 	def __str__(self):
 		return self.Name.encode('utf-8')
 

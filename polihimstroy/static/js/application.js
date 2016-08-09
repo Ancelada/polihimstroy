@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+	var id;
 	//кнопка выйти
 	$('#login_panel').delegate('#logout', 'click', function(){
 		parameters = {};
@@ -62,15 +62,16 @@ $(document).ready(function(){
 
 	//отобразить содержимое paragraph
 	$('.content').delegate('.a_paragraph_item', 'click', function(){
-		$('#paragraph_content').foundation('open');
+		id = parseInt($(this).attr('data-id'));
+		paragraphUnit(id);
 	});
 
 	//наведение мыши на paragraph
-	var par_pos = 140;
+	var par_pos = 250;
 	$('.content').delegate('.a_paragraph_item', 'mouseenter', function(){
 		a = $(this).find('#paragraph_name');
 		a.animate({top: par_pos+25}, 200);
-		a.delay(100).animate({top: 100}, 200);
+		a.delay(100).animate({top: 240}, 200);
 	});
 
 	$('.content').delegate('.a_paragraph_item', 'mouseleave', function(){
@@ -86,14 +87,22 @@ $(document).ready(function(){
 	makeAjax(parameters);
 
 	//если загрузился background
-	$('#backgroundimage').imagesLoaded( function() {
+	backgroundImageLoaded($('#backgroundimage'), function(){
 		loadingClose();
   		$('#backgroundimage').fadeIn(400);
   		$('#page_head').show(400);
 	});
-
-
 });
+
+var backgroundImageLoaded = function(x, func){
+  bg = x.css('background-image');
+  if(bg){
+    var src = bg.replace(/(^url\()|(\)$|[\"\'])/g, '');
+    var img = $('<img>').attr('src', src).on('load', function(){
+    	func();
+    });
+  }
+}
 
 var makeNotification = function(type, header, text){
 	parameters = {};
@@ -101,6 +110,19 @@ var makeNotification = function(type, header, text){
 	parameters['type'] = type;
 	parameters['header'] = header;
 	parameters['text'] = text;
+	makeAjax(parameters);
+}
+//загрузить страничку paragraph_unit
+var paragraphUnit = function(id){
+	//текущая страница как как предидущая
+	updatePreviousCurrent('login');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['unit'] = id;
+	parameters['method'] = 'paragraphunit';
 	makeAjax(parameters);
 }
 
@@ -154,19 +176,25 @@ var makeAjax = function(parameters){
     	dataType: "json",
     	async: true,
     	success: function(data, textStatus, jqXHR){
+    		//если paragraph_unit страница
+    		if (parameters['method'] == 'paragraphunit'){
+    			console.log(data);
+    			$('#maincontent').html(data['string']);
+    			$('#maincontent').show(400);
+    			loadingClose();
     		//если основная страница
-    		if (parameters['method'] == 'loadingindex'){
+    		} else if (parameters['method'] == 'loadingindex'){
     			$('.content').html(data['string']);
     			//загружаем index maincontent
 				var no = 0;
-		  		$.each($('.paragraph'), function(i){
-					$(this).imagesLoaded(function(){
+		  		$.each($('.paragraph_background'), function(i){
+		  			backgroundImageLoaded($(this), function(){
 						no += 1;
-						if (no == $('.paragraph').length){
+						if (no == $('.paragraph_background').length){
 							$('#maincontent').delay(300).show(400);
 							loadingClose();
 						}
-					})
+		  			})
 				});
 			//если login страница
     		} else if (parameters['method'] == 'login'){
@@ -214,5 +242,7 @@ gotoPrevious = function(){
 		loadingIndex();
 	} else if ($('#previous_page').html() == 'login'){
 		login();
-	}	
+	} else if ($('#previous_page').html() == 'paragraphunit'){
+		paragraphUnit(id);
+	}
 }

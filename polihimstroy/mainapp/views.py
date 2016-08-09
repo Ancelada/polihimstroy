@@ -53,9 +53,17 @@ def index(request):
 				return JsonResponse({'login_panel': args['login_panel'], 'message': 'success'})
 			else:
 				return JsonResponse({'message': 'aborted'})
+		# страница paragraph_unit
+		if string['method'] == 'paragraphunit':
+			par_id = string['unit']
+			args['units'] = Unit.objects.filter(Paragraph_id=par_id).values( \
+				'Name', 'Description')
+			args['paragraph_name'] = Paragraph.objects.get(id=par_id).Name
+			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
+			return JsonResponse({'string': args['paragraph_unit']})
 		# страница index
 		if string['method'] == 'loadingindex':
-			args['Paragraph'] = Paragraph.objects.all()
+			args['Paragraph'] = Paragraph.objects.all().order_by('No')
 			args['content'] = render_to_string('index.html', args)
 			return JsonResponse({'string': args['content']})
 		# страница login

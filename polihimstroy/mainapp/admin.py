@@ -7,6 +7,9 @@ class ParagraphAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Наименование', {'fields': ['Name']}),
 		('картинка', {'fields': ['Image']}),
+		('Признак большая картинка', {'fields': ['Large']}),
+		('Порядковый номер', {'fields': ['No']}),
+		('Ориентация по левому краю', {'fields': ['AlignLeft']}),
 	]
 
 class UnitAdmin(admin.ModelAdmin):

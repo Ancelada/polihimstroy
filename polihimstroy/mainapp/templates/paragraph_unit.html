@@ -1,0 +1,15 @@
+<h1 class="text-center">{{paragraph_name}}</h1>
+<ul class="accordion" data-accordion>
+	{% for unit in units %}
+		<li clas="accordion-item is-active" data-accordion-item>
+			<a href="#" class="accordion-title"><h3 class="subheader text-center">{{unit.Name}}</h3></a>
+			<div class="accordion-content" data-tab-content>
+				{{unit.Description}}
+			</div>
+		</li>
+	{% endfor %}
+</ul>
+<div class="large-12 small-12 colums float-left" style="height:100px;"></div>
+<script>
+	$('#maincontent').foundation();
+</script>

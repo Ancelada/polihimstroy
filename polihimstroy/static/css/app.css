@@ -1,3 +1,11 @@
+#page_head a{
+	color:#fff;	
+}
+
+#page_head a:hover{
+	color:#fff;
+}
+
 a{
 	color:#fff;
 }
@@ -34,22 +42,25 @@ body{
 	position:absolute;
 	top:0;
 	height:100px;
-	background-color:rgba(0, 140, 186, .8);
+	background-color:rgba(0, 0, 0, .5);
+	/* background-color:rgba(0, 140, 186, .8); */
 	z-index:1;
 	color:#fff;
 }
 #page_text{
+	font-family: "Segoe UI", "Frutiger", "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 	display:inline-block;
 	margin-top:15px;
 	text-transform: uppercase;
 }
 
 #login_panel{
-	display:inline-block;
-	position:relative;
-	max-width: 40%;
-	margin-top:49px;
-	margin-right: 15px;
+	/* display:inline-block;
+	position:relative; */
+	margin-top:24px;
+	text-align: right;
+	/* margin-top:49px; */
+	/* margin-right: 15px; */
 }
 .header{
 	display:block;
@@ -79,6 +90,21 @@ body{
 }
 
 .grayscale{
+	filter: none;
+	-webkit-filter: grayscale(0%);
+	/* filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+	filter: gray;
+	transition: all .6s ease;
+	-moz-transition: all .6s ease-in-out;
+	-webkit-transition: all .6s ease;
+	-webkit-filter: grayscale(100%);
+	-webkit-backface-visibility: hidden; */
+
+}
+
+.paragraph_background.grayscale:hover {
+	/* filter: none;
+	-webkit-filter: grayscale(0%); */
 	filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 	filter: gray;
 	transition: all .6s ease;
@@ -86,11 +112,6 @@ body{
 	-webkit-transition: all .6s ease;
 	-webkit-filter: grayscale(100%);
 	-webkit-backface-visibility: hidden;
-}
-
-.paragraph_background.grayscale:hover {
-	filter: none;
-	-webkit-filter: grayscale(0%);
 }
 
 .paragraph_background{
@@ -111,10 +132,22 @@ body{
 }
 
 #paragraph_name h3{
+	font-family: "Segoe UI", "Frutiger", "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+	vertical-align: middle;
 	top:50%;
-	background-color:rgba(0, 140, 186, .8);
+	background:rgba(0, 0, 0, .5);
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0, 1));
+	background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0, 1));
+	background: -mox-linear-gradient(rgba(0,0,0,0), rgba(0,0,0, 1));
+	background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0, 1));
+	/* background-color:rgba(0, 0, 0, .5); */
+	/* background-color:rgba(0, 140, 186, .8); */
 	color:#fff;
-	height: 100px;
+	height: 120px;
+	padding-left:20px;
+	padding-right:20px;
+	line-height: 25px;
+	padding-top:35px;
 }
 
 #paragraph_name{
@@ -123,9 +156,11 @@ body{
 	display:block;
 	position:relative;
 	z-index: 1;
-	width:104%;
-	left:-2%;
-	top:140px;
+	width: 100%;
+	/* width:104%; */
+	/* left:-2%; */
+	top:260px;
+	/* top:140px; */
 	/* transition: all .6s ease;
 	-moz-transition: all .6s ease-in-out;
 	-webkit-transition: all .6s ease;
@@ -136,15 +171,22 @@ body{
 	margin-top:30px;
 }
 
+#goto_previous h2{
+	padding-left:15px;
+	font-family: "Segoe UI", "Frutiger", "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
 #goto_previous{
 	display:block;
 	color:#fff;
 	background-color:rgba(0,0,0, .5);
 	position:fixed;
-	bottom:0;
+	bottom: 15px;
+	height: 60px;
+	width:240px;
+	/* bottom:0;
 	height:40px;
-	width:180px;
-	z-index:1;
+	width:180px; */
+	z-index:2;
 }
 
 #notification_panel{
@@ -195,4 +237,8 @@ body{
 
 #greations_close:hover{
 	color:#000;
+}
+
+.accordion-title{
+
 }
