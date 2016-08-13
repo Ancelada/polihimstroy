@@ -20,11 +20,10 @@ body{
 	display:block;
 	width:100%;
 	min-height:100%;
-	overflow-y:scroll; 
 }
 
 #backgroundimage{
-	position:absolute;
+	position:fixed;
 	top:0;
 	left:0;
 	display:block;
@@ -44,7 +43,6 @@ body{
 	height:100px;
 	background-color:rgba(0, 0, 0, .5);
 	/* background-color:rgba(0, 140, 186, .8); */
-	z-index:1;
 	color:#fff;
 }
 #page_text{
@@ -52,6 +50,7 @@ body{
 	display:inline-block;
 	margin-top:15px;
 	text-transform: uppercase;
+	white-space: nowrap;
 }
 
 #login_panel{
@@ -59,20 +58,21 @@ body{
 	position:relative; */
 	margin-top:24px;
 	text-align: right;
+	padding:0;
 	/* margin-top:49px; */
 	/* margin-right: 15px; */
 }
 .header{
 	display:block;
-	position:absolute;
+	position:fixed;
 	top:0;
 	width: 100%;
+	z-index:4;
 }
 
 .content{
 	z-index:1;
-	height:100%;
-	overflow:hidden;
+	min-height:100%;
 }
 #precontent{
 	height: 100px;
@@ -81,7 +81,6 @@ body{
 #maincontent{
 	background-color:rgba(255, 255, 255, .5);
 	height: 100%;
-	overflow-y:scroll;
 }
 .paragraph{
 	overflow: hidden;
@@ -180,12 +179,11 @@ body{
 	color:#fff;
 	background-color:rgba(0,0,0, .5);
 	position:fixed;
-	bottom: 15px;
-	height: 60px;
-	width:240px;
-	/* bottom:0;
+	bottom:0;
 	height:40px;
-	width:180px; */
+	padding-left:10px;
+	padding-right:15px;
+	/* width:180px; */
 	z-index:2;
 }
 
@@ -194,7 +192,7 @@ body{
 	right:0;
 	bottom:0;
 	display:block;
-	z-index:2;
+	z-index:1007;
 	width:400px;
 	min-height:0px;
 }
@@ -241,4 +239,15 @@ body{
 
 .accordion-title{
 
+}
+
+#prefix{
+	background-color:rgba(0,0,0, .5);
+	color:#fff;
+	padding:7px;
+	padding-left:27px;
+}
+
+.has-tip{
+	border-bottom:none;
 }

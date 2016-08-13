@@ -20,10 +20,11 @@
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
 </head>
 <body>
+  <div id="paragraph_id"></div>
   <div id="notification_panel">
     
   </div>
-  <a><span id="goto_previous" style="display:none;"><h2>Вернуться</h2></span></a>
+  <a><span id="goto_previous" style="display:none;"><h3>Вернуться</h3></span></a>
   <span id="previous_page" style="display:none;"></span>
   <span id="current_page" style="display:none;"></span>
   <div class="reveal" id="loading" data-reveal style="position:absolute;">
@@ -39,7 +40,7 @@
   <div id="backgroundimage" style="display:none;"></div>
   <div class="header">
     <div id="page_head" class="large-12 small-12 columns" style="display:none;">
-      <a id="mainpage"><h1 id="page_text" class="float-left large-8 small-8 columns">тзк полихимстрой</h1></a>
+      <a id="mainpage" data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="На главную" class="float-left large-8 small-8 columns"><h1 id="page_text">тзк полихимстрой</h1></a>
       <div id="login_panel" class="large-4 small-4 columns float-right">
         {{login_panel}}
       </div>
@@ -52,6 +53,7 @@
   <script src="{% static 'js/jscolor.min.js'%}"></script>
   <!-- <script src="{% static 'js/vendor/foundation.reveal.js' %}"></script> -->
   <script src="{% static 'js/foundation/foundation.reveal.js' %}"></script>
+  <script src="{% static 'js/foundation.tooltip.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.keyboard.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.box.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.triggers.js' %}"></script>
@@ -79,7 +81,6 @@
   <script src="{% static 'js/foundation.equalizer.js' %}"></script>
   <script src="{% static 'js/foundation.dropdown.js' %}"></script>
   <script src="{% static 'js/foundation.topbar.js' %}"></script>
-  <script src="{% static 'js/foundation.tooltip.js' %}"></script>
   <script src="{% static 'js/foundation.orbit.js' %}"></script>
   <script src="{% static 'js/foundation.magellan.js' %}"></script>
   <script src="{% static 'js/foundation.alert.js' %}"></script>

@@ -28,3 +28,15 @@ class Unit(models.Model):
 	Paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.Name.encode('utf-8')
+
+class Order(models.Model):
+	class Meta():
+		db_table = 'Order'
+	Name = models.CharField(max_length=200, null=True, blank=True)
+	TelNo = models.BigIntegerField(null=True, blank=True)
+	watsup = models.NullBooleanField(blank=True, null=True)
+	email = models.EmailField(max_length=200, null=True, blank=True)
+	DateTime = models.DateTimeField(blank=True, null=True)
+	Unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.Name.encode('utf-8')

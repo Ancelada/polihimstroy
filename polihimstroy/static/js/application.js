@@ -1,5 +1,55 @@
 $(document).ready(function(){
 	var id;
+	//кнопка отправить заявку
+	$('#paragraph_content').delegate('#submit_order', 'click', function(){
+		name = $('#name').val();
+		telephone = $('#telephone').val();
+		watsup = 0;
+		if ($('input#telmethod')[0].checked == true){
+			watsup = 0;
+		} else if ($('input#watsupmethod')[0].checked == true ){
+			watsup = 1;
+		}
+		error = 0;
+		//если пустое поле name
+		if (name == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле имя';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+
+		//если пустое поле телефон
+		if (telephone == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле телефон';
+			makeNotification('alert', header, text)
+			error = 1;
+		} else if (jQuery.isNumeric(telephone) == false){
+			header = 'ошибка пользователя';
+			text = 'некорректный номер телефона';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		if (error == 0){
+			parameters = {};
+			parameters['method'] = 'submit_order';
+			parameters['name'] = name;
+			parameters['telephone'] = telephone;
+			parameters['watsup'] = watsup;
+			parameters['unit_id'] = parseInt($(this).attr('data-id'));
+			makeAjax(parameters);
+		}
+	});
+
+	//оставить заявку
+	$('.content').delegate('#makeorder', 'click', function(){
+		parameters = {}
+		parameters['unit_id'] = parseInt($(this).attr('data-id'));
+		parameters['method'] = 'showorderform';
+		makeAjax(parameters);
+	});
+
 	//кнопка выйти
 	$('#login_panel').delegate('#logout', 'click', function(){
 		parameters = {};
@@ -42,6 +92,10 @@ $(document).ready(function(){
 			$(this).attr('data-id', a+1);
 		});
 	}
+	//страница заказов
+	$('#login_panel').delegate('#orders', 'click', function(){
+		orders();
+	});
 
 	//страница войти
 	$('#login_panel').delegate('#login', 'click', function(){
@@ -63,6 +117,7 @@ $(document).ready(function(){
 	//отобразить содержимое paragraph
 	$('.content').delegate('.a_paragraph_item', 'click', function(){
 		id = parseInt($(this).attr('data-id'));
+		$('#paragraph_id').attr('data-id', id);
 		paragraphUnit(id);
 	});
 
@@ -112,10 +167,24 @@ var makeNotification = function(type, header, text){
 	parameters['text'] = text;
 	makeAjax(parameters);
 }
+
+// загрузить страничку заявки
+var orders = function(id){
+	//текущая страница как предидущая
+	updatePreviousCurrent('orders');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['method'] = 'orders';
+	makeAjax(parameters);
+}
+
 //загрузить страничку paragraph_unit
 var paragraphUnit = function(id){
 	//текущая страница как как предидущая
-	updatePreviousCurrent('login');
+	updatePreviousCurrent('paragraphunit');
 	//обновляем кнопку предидущая страница
 	updateGoToPrevious();
 	$('#maincontent').hide(400);
@@ -167,7 +236,7 @@ var loadingClose = function(){
 }
 
 var makeAjax = function(parameters){
-	loadingOpen();
+	/*loadingOpen();*/
 	$.ajax({
     	type: "POST",
     	url: "/",
@@ -178,10 +247,14 @@ var makeAjax = function(parameters){
     	success: function(data, textStatus, jqXHR){
     		//если paragraph_unit страница
     		if (parameters['method'] == 'paragraphunit'){
-    			console.log(data);
     			$('#maincontent').html(data['string']);
     			$('#maincontent').show(400);
     			loadingClose();
+			//если страница заказов
+			} else if (parameters['method'] == 'orders'){
+				$('#maincontent').html(data['string']);
+				loadingClose();
+				$('#maincontent').show(400);
     		//если основная страница
     		} else if (parameters['method'] == 'loadingindex'){
     			$('.content').html(data['string']);
@@ -226,6 +299,16 @@ var makeAjax = function(parameters){
     			header = 'уведомление';
     			text = 'выполнен выход пользователя';
     			makeNotification('success', header, text);
+    		// если оставить заявку 'showorderform'
+    		} else if (parameters['method'] == 'showorderform'){
+				$('#paragraph_content').html(data['string']);
+				$('#paragraph_content').foundation('open');
+			// если отправить заявку
+    		} else if (parameters['method'] == 'submit_order'){
+    			$('#paragraph_content').foundation('close');
+    			header = 'уведомление';
+    			text = 'заявка успешно отправлена';
+    			makeNotification('success', header, text)
     		}
     	}
 	});
@@ -243,6 +326,9 @@ gotoPrevious = function(){
 	} else if ($('#previous_page').html() == 'login'){
 		login();
 	} else if ($('#previous_page').html() == 'paragraphunit'){
+		id = parseInt($('#paragraph_id').attr('data-id'));
 		paragraphUnit(id);
+	} else if ($('#previous_page').html() == 'orders'){
+		orders();
 	}
 }

@@ -1,0 +1,31 @@
+{% if username %}
+	<h1 class="text-center">Список заявок</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Продукт</th>
+				<th>Имя</th>
+				<th>Номер телефона</th>
+				<th>Желаемый способ связи</th>
+				<th>Дата заявки</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{order.Unit__Name}}</td>
+					<td>{{order.Name}}</td>
+					<td>+7{{order.TelNo}}</td>
+					<td>{% if order.watsup == 1 %}watsup{% else %}телефон{% endif %}</td>
+					<td>{{order.DateTime}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<h3>Необходимо войти в систему</h3>
+{% endif %}
+<div class="large-12 small-12 colums float-left" style="height:100px;"></div>
+<script>
+	$('#maincontent').foundation();
+</script>

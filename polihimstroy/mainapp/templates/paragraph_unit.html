@@ -4,7 +4,8 @@
 		<li clas="accordion-item is-active" data-accordion-item>
 			<a href="#" class="accordion-title"><h3 class="subheader text-center">{{unit.Name}}</h3></a>
 			<div class="accordion-content" data-tab-content>
-				{{unit.Description}}
+				<h4>{{unit.Description}}</h4>
+				<button class="large button" id="makeorder" data-id="{{unit.id}}">оставить заявку</button>
 			</div>
 		</li>
 	{% endfor %}
