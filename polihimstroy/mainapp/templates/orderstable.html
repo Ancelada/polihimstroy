@@ -1,27 +1,94 @@
 {% if username %}
 	<h1 class="text-center">Список заявок</h1>
-	<table>
-		<thead>
-			<tr>
-				<th>Продукт</th>
-				<th>Имя</th>
-				<th>Номер телефона</th>
-				<th>Желаемый способ связи</th>
-				<th>Дата заявки</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for order in orders %}
-				<tr>
-					<td>{{order.Unit__Name}}</td>
-					<td>{{order.Name}}</td>
-					<td>+7{{order.TelNo}}</td>
-					<td>{% if order.watsup == 1 %}watsup{% else %}телефон{% endif %}</td>
-					<td>{{order.DateTime}}</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
+	<ul class="accordion" data-accordion>
+		<li class="accordion-item">
+			<a href="#" class="accordion-title"><h4 class="subheader text-center">Заявки на товары и химические  вещества</h4></a>
+			<div class="accordion-content" data-tab-content>
+				<table>
+					<thead>
+						<tr>
+							<th>Продукт</th>
+							<th>Имя</th>
+							<th>Номер телефона</th>
+							<th>Желаемый способ связи</th>
+							<th>Дата заявки</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for order in orders %}
+							<tr>
+								<td>{{order.Unit__Name}}</td>
+								<td>{{order.Name}}</td>
+								<td>8{{order.TelNo}}</td>
+								<td>{% if order.watsup == 1 %}whatsapp{% else %}телефон{% endif %}</td>
+								<td>{{order.DateTime}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</li>
+		<li class="accordion_item">
+			<a href="#" class="accordion-title"><h4 class="subheader text-center">Заявки на перевозку грузов</h4></a>
+			<div class="accordion-content" data-tab-content>
+				<table>
+					<thead>
+						<tr>
+							<th>Способ перевозки</th>
+							<th>Имя</th>
+							<th>Номер телефона</th>
+							<th>Место отправки</th>
+							<th>Место назначения</th>
+							<th>Объем груза</th>
+							<th>Желаемый способ связи</th>
+							<th>Дата заявки</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for transport_order in transport_orders %}
+							<tr>
+								<td>{{transport_order.Unit__Name}}</td>
+								<td>{{transport_order.Name}}</td>
+								<td>8{{transport_order.TelNo}}</td>
+								<td>{{transport_order.From}}</td>
+								<td>{{transport_order.To}}</td>
+								<td>{{transport_order.Volume}}</td>
+								<td>{% if transport_order == 1 %}whatsapp{% else %}телефон{% endif %}</td>
+								<td>{{transport_order.DateTime}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</li>
+		<li class="accordion_item">
+			<a href="#" class="accordion-title"><h4 class="subheader text-center">Пожелания и предложения</h4></a>
+			<div class="accordion-content" data-tab-content>
+				<table>
+					<thead>
+						<tr>
+							<th>Имя</th>
+							<th>Номер телефона</th>
+							<th>Э/почта</th>
+							<th>Текст</th>
+							<th>Дата заявки</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for git in getintouch %}
+							<tr>
+								<td>{{git.Name}}</td>
+								<td>8{{git.TelNo}}</td>
+								<td>{{git.Email}}</td>
+								<td>{{git.Text}}</td>
+								<td>{{git.DateTime}}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</li>
+	</ul>
 {% else %}
 	<h3>Необходимо войти в систему</h3>
 {% endif %}

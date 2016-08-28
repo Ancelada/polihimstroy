@@ -10,6 +10,8 @@ class ParagraphAdmin(admin.ModelAdmin):
 		('Признак большая картинка', {'fields': ['Large']}),
 		('Порядковый номер', {'fields': ['No']}),
 		('Ориентация по левому краю', {'fields': ['AlignLeft']}),
+		('В алфавитном порядке', {'fields': ['AlphabetOrder']}),
+		('Флаг перевозки грузов да/нет', {'fields': ['TransportFlag']})
 	]
 
 class UnitAdmin(admin.ModelAdmin):

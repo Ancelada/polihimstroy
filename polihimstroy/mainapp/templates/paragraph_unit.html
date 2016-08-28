@@ -1,16 +1,30 @@
 <h1 class="text-center">{{paragraph_name}}</h1>
-<ul class="accordion" data-accordion>
+<ul class="accordion" data-accordion data-allow-all-closed="true">
 	{% for unit in units %}
-		<li clas="accordion-item is-active" data-accordion-item>
+		<li class="accordion-item{% if unit.id == unit_id %} is-active{% endif %}" id="item_unit" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{par_id}}" data-unit="{{unit.id}}">
 			<a href="#" class="accordion-title"><h3 class="subheader text-center">{{unit.Name}}</h3></a>
-			<div class="accordion-content" data-tab-content>
-				<h4>{{unit.Description}}</h4>
-				<button class="large button" id="makeorder" data-id="{{unit.id}}">оставить заявку</button>
+			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content>
+				<h4>{{unit.Name|upper}}</h4>
+				<h4>{{unit.Description|linebreaks}}</h4>
+				<button class="large button" id="makeorder" data-id="{{unit.id}}" data-transport="{{transport_flag}}">оставить заявку</button>
 			</div>
 		</li>
 	{% endfor %}
 </ul>
+
+<ol id="joyRideTipContent">
+      <li data-id="unit{{unit_id}}" data-options="tipLocation:top;tipAnimation:fade">
+      </li>
+    </ol>
 <div class="large-12 small-12 colums float-left" style="height:100px;"></div>
 <script>
+	$('#maincontent').show(400);
+	$(window).load(function() {
+        $('#joyRideTipContent').joyride({
+			autoStart : true,
+	     /*   modal:true,
+	        expose: true*/
+		});
+	});
 	$('#maincontent').foundation();
 </script>

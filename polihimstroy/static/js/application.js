@@ -1,5 +1,159 @@
 $(document).ready(function(){
+
+	//history история
+	History.Adapter.bind(window, 'statechange', function(){
+		var State = History.getState();
+		window.location = State.hashedUrl;
+	});
+
+	//клик на unit
+	//переход на удовлетворяющий критерю unit
+	$('body').delegate('#item_unit', 'click', function(){
+		par_id = $(this).attr('data-paragraph');
+		unit_id = $(this).attr('data-unit');
+		history.pushState({state:2}, 'paragraph_unit', '/paragraph/'+par_id+'/unit/'+unit_id)
+	});
+
+	//клик на schema
+	$('#schema').on('click', function(){
+		parameters = {};
+		parameters['method'] = 'schema';
+		makeAjax(parameters);		
+	});
+
+
+
+	a = History.getState();
+	//если разлинковка = пусто, страница index
+	if (a.hash == "/"){
+		loadingIndex();
+	//если разлинковка = login, страница login
+	} else if (a.hash == "/login/") {
+		login();
+	//если разлинковка = orders, страница orders
+	} else if (a.hash == "/orders/") {
+		orders();
+	//если разлинковка = contacts, страница contacts
+	} else if (a.hash == "/contacts/") {
+		contacts();
+	}
+
+	
+	loadingClose();
 	var id;
+	//кнопка отправить пожелание и предложение
+	$('.content').delegate('#submit_getintouch', 'click', function(){
+		name = $('#name').val();
+		telephone = $('#telephone').val();
+		text = $('#text').val();
+		email = $('#e-mail').val();
+		error = 0;
+		//если пустое поле name
+		if (name == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле имя';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		//если пустое поле телефон
+		if (telephone == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле телефон';
+			makeNotification('alert', header, text)
+			error = 1;
+		} else if (jQuery.isNumeric(telephone) == false){
+			header = 'ошибка пользователя';
+			text = 'некорректный номер телефона';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		//если пустое поле text
+		if (text == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле текст пожелания и предложения';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		if (error == 0){
+			parameters = {};
+			parameters['method'] = 'getintouch';
+			parameters['name'] = name;
+			parameters['telephone'] = telephone;
+			parameters['email'] = email;
+			parameters['text'] = text;
+			makeAjax(parameters);
+		}
+	});
+	//кнопка отправить заявку на транспорт
+	$('#paragraph_content').delegate('#submit_transport_order', 'click', function(){
+		name = $('#name').val();
+		telephone = $('#telephone').val();
+		from = $('#from').val();
+		to = $('#to').val();
+		volume = $('#volume').val();
+		watsup = 0;
+		if ($('input#telmethod')[0].checked == true){
+			watsup = 0;
+		} else if ($('input#watsupmethod')[0].checked == true){
+			watsup = 1;
+		}
+		error = 0;
+		//если пустое поле объем груза
+		if (volume == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле объем груза';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		//если пустое поле место назначения
+		if (to == 0){
+			header = 'ошибка  пользователя';
+			text = 'пустое поле место назначения';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		//если пустое поле место отправки
+		if (from == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле место отправки';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		//если пустое поле name
+		if (name == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле имя';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+
+		//если пустое поле телефон
+		if (telephone == 0){
+			header = 'ошибка пользователя';
+			text = 'пустое поле телефон';
+			makeNotification('alert', header, text)
+			error = 1;
+		} else if (jQuery.isNumeric(telephone) == false){
+			header = 'ошибка пользователя';
+			text = 'некорректный номер телефона';
+			makeNotification('alert', header, text);
+			error = 1;
+		}
+		if (error == 0){
+			parameters = {};
+			parameters['method'] = 'submit_transport_order';
+			parameters['name'] = name;
+			parameters['telephone'] = telephone;
+			parameters['watsup'] = watsup;
+			parameters['from'] = from;
+			parameters['to'] = to;
+			parameters['volume'] = volume;
+			parameters['unit_id'] = parseInt($(this).attr('data-id'));
+			makeAjax(parameters);
+		}
+	});
+
+
 	//кнопка отправить заявку
 	$('#paragraph_content').delegate('#submit_order', 'click', function(){
 		name = $('#name').val();
@@ -44,10 +198,19 @@ $(document).ready(function(){
 
 	//оставить заявку
 	$('.content').delegate('#makeorder', 'click', function(){
-		parameters = {}
-		parameters['unit_id'] = parseInt($(this).attr('data-id'));
-		parameters['method'] = 'showorderform';
-		makeAjax(parameters);
+		data_transport = $(this).attr('data-transport');
+		//обычная форма
+		if (data_transport == 'None'){
+			parameters = {}
+			parameters['unit_id'] = parseInt($(this).attr('data-id'));
+			parameters['method'] = 'showorderform';
+			makeAjax(parameters);	
+		} else if (data_transport == 'True'){
+			parameters = {};
+			parameters['unit_id'] = parseInt($(this).attr('data-id'));
+			parameters['method'] = 'showtransportform';
+			makeAjax(parameters);
+		}
 	});
 
 	//кнопка выйти
@@ -92,6 +255,11 @@ $(document).ready(function(){
 			$(this).attr('data-id', a+1);
 		});
 	}
+	//страница контакты
+	$('#contact').on('click', function(){
+		contacts();
+	})
+
 	//страница заказов
 	$('#login_panel').delegate('#orders', 'click', function(){
 		orders();
@@ -112,7 +280,7 @@ $(document).ready(function(){
 		loadingIndex();
 	});
 
-	$('#paragraph_content').foundation('open');
+	/*$('#paragraph_content').foundation('open');*/
 
 	//отобразить содержимое paragraph
 	$('.content').delegate('.a_paragraph_item', 'click', function(){
@@ -133,13 +301,6 @@ $(document).ready(function(){
 		a = $(this).find('#paragraph_name');
 		a.animate({top: par_pos}, 200);
 	})
-
-	//отображаем страничку loadingindex
-	updatePreviousCurrent('loadingindex');
-	loadingOpen();
-	parameters = {};
-	parameters['method'] = 'loadingindex';
-	makeAjax(parameters);
 
 	//если загрузился background
 	backgroundImageLoaded($('#backgroundimage'), function(){
@@ -168,6 +329,21 @@ var makeNotification = function(type, header, text){
 	makeAjax(parameters);
 }
 
+// загрузить страничку контакты
+var contacts = function(id){
+	//текущая страница как предидущая
+	updatePreviousCurrent('contacts');
+	//обновляем кнопку предидушая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['method'] = 'contacts';
+	// записываем в url браузера
+	history.pushState({state:4}, 'contacts', '/contacts');
+	makeAjax(parameters);
+}
+
 // загрузить страничку заявки
 var orders = function(id){
 	//текущая страница как предидущая
@@ -178,6 +354,8 @@ var orders = function(id){
 	loadingOpen();
 	parameters = {};
 	parameters['method'] = 'orders';
+	//записываем в url браузера
+	history.pushState({state:1}, 'orders', '/orders/')
 	makeAjax(parameters);
 }
 
@@ -192,6 +370,8 @@ var paragraphUnit = function(id){
 	parameters = {};
 	parameters['unit'] = id;
 	parameters['method'] = 'paragraphunit';
+	//записываем в url браузера
+	history.pushState({state:1}, 'paragraphunit', '/paragraph/'+id);
 	makeAjax(parameters);
 }
 
@@ -203,7 +383,10 @@ var login = function(){
 	updateGoToPrevious()
 	$('#maincontent').hide(400);
 	loadingOpen();
+	parameters = {};
 	parameters['method'] = 'login';
+	// записываем в url браузера
+	history.pushState({state:3}, 'login', '/login');
 	makeAjax(parameters);	
 }
 
@@ -216,6 +399,8 @@ var loadingIndex = function(){
 	loadingOpen();
 	parameters = {};
 	parameters['method'] = 'loadingindex';
+	// записываем в url браузера
+	history.pushState({state:0}, 'loadingindex', '/')
 	makeAjax(parameters);
 }
 
@@ -255,6 +440,11 @@ var makeAjax = function(parameters){
 				$('#maincontent').html(data['string']);
 				loadingClose();
 				$('#maincontent').show(400);
+			//если страница контактов
+			} else if (parameters['method'] == 'contacts'){
+				$('#maincontent').html(data['string']);
+				loadingClose();
+				$('#maincontent').show(400);
     		//если основная страница
     		} else if (parameters['method'] == 'loadingindex'){
     			$('.content').html(data['string']);
@@ -286,7 +476,7 @@ var makeAjax = function(parameters){
     				header = 'уведомление';
     				text = 'выполнен вход';
     				makeNotification('success', header, text);
-    				gotoPrevious();
+    				orders();
     			} else {
     				header = 'ошибка пользователя';
     				text = 'некорректное имя пользователя и пароль';
@@ -299,16 +489,56 @@ var makeAjax = function(parameters){
     			header = 'уведомление';
     			text = 'выполнен выход пользователя';
     			makeNotification('success', header, text);
+			// eсли оставить заявку 'showtransportform'
+			} else if (parameters['method'] == 'showtransportform'){
+				$('#paragraph_content').html(data['string']);
+				$('#paragraph_content').foundation('open');
     		// если оставить заявку 'showorderform'
     		} else if (parameters['method'] == 'showorderform'){
 				$('#paragraph_content').html(data['string']);
 				$('#paragraph_content').foundation('open');
+			// если отправить заявку на транспорт
+			} else if (parameters['method'] == 'submit_transport_order'){
+				$('#paragraph_content').foundation('close');
+				answer = data['string'];
+				if (answer == 'ok'){
+    				header = 'уведомление';
+	    			text = 'заявка успешно отправлена';
+	    			makeNotification('success', header, text);	
+    			} else if (answer == 'notok'){
+    				header = 'ошибка сайта';
+					text = 'при отправке формы возникла ошибка';
+					makeNotification('alert', header, text);
+    			}
 			// если отправить заявку
     		} else if (parameters['method'] == 'submit_order'){
     			$('#paragraph_content').foundation('close');
-    			header = 'уведомление';
-    			text = 'заявка успешно отправлена';
-    			makeNotification('success', header, text)
+    			answer = data['string'];
+    			if (answer == 'ok'){
+    				header = 'уведомление';
+	    			text = 'заявка успешно отправлена';
+	    			makeNotification('success', header, text);	
+    			} else if (answer == 'notok'){
+    				header = 'ошибка сайта';
+					text = 'при отправке формы возникла ошибка';
+					makeNotification('alert', header, text);
+    			}
+			// если оставить пожелание и предложение
+			} else if (parameters['method'] == 'getintouch'){
+				answer = data['string'];
+				if (answer == 'ok'){
+					header = 'уведомление';
+					text = 'пожелание и предложение успешно отправлено';
+					makeNotification('success', header, text);
+				} else if (answer == 'notok'){
+					header = 'ошибка сайта';
+					text = 'при отправке формы возникла ошибка';
+					makeNotification('alert', header, text);
+				}
+    		// если показать карту
+    		} else if (parameters['method'] == 'schema'){
+    			$('#paragraph_content').html(data['string']);
+    			$('#paragraph_content').foundation('open');
     		}
     	}
 	});

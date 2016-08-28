@@ -56,9 +56,11 @@ body{
 #login_panel{
 	/* display:inline-block;
 	position:relative; */
-	margin-top:24px;
+	/* margin-top:29px;
 	text-align: right;
 	padding:0;
+	font-size:13px;
+	padding-right:15px; */
 	/* margin-top:49px; */
 	/* margin-right: 15px; */
 }
@@ -67,7 +69,7 @@ body{
 	position:fixed;
 	top:0;
 	width: 100%;
-	z-index:4;
+	z-index:104;
 }
 
 .content{
@@ -250,4 +252,79 @@ body{
 
 .has-tip{
 	border-bottom:none;
+}
+
+#header_panel{
+	margin-top:5px;
+	list-style-type: none;
+}
+
+.header_button{
+	display:block;
+	position:relative;
+	padding:10px;
+	/* font-family: "Segoe UI", "Frutiger", "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif; */
+}
+
+li{
+	display:block;
+}
+
+#header_button_group{
+	padding:0;
+}
+
+.header_button_elem{
+	padding:0;
+	margin:0;
+}
+
+.header_button_elem button{
+	width:100%;
+	height: 100px;
+	display: block;
+	position: relative;
+}
+
+.header_button_elem .secondary{
+	background:none;
+}
+
+.header_button_elem .secondary:hover{
+	background: none;
+}
+
+.map{
+	height:300px;
+	margin:0;
+	padding:0;
+}
+
+#header_button_panel{
+	margin:0;
+	padding:0;
+}
+
+/* #logbut{
+	background: none;
+	padding:0;
+	margin:0;
+	display:block;
+	position:relative;
+	width:100%;
+	height:40px;
+	overflow: visible;
+} */
+
+#logbut:hover{
+	background: none;
+}
+
+#page_head a.login_menu_elem{
+	color:#fff;
+}
+
+#menu-dropdown{
+	background:rgba(0, 0, 0, .5);
+	border:none;
 }
