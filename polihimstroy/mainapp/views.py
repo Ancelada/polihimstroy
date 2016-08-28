@@ -60,14 +60,14 @@ def sendemail(email_receivers, text):
 		for i in email_receivers:
 			subj = 'Полихимстрой. Заявка.'
 			subj = translit(subj.decode('utf-8'), 'ru', reversed=True)
-			me = 'robot@neiroprofi.ru'
+			me = 'robot@polihimstroy.ru'
 			you = i
 			text = text
 			subj = subj
 			server = 'smtp.fullspace.ru'
 			port = 25
-			user_name = 'robot@neiroprofi.ru'
-			user_passwd = '115648'
+			user_name = 'robot@polihimstroy.ru'
+			user_passwd = 'PDVAncel115648'
 			msg = MIMEText(text)
 			msg['Subject'] = subj
 			msg['From'] = me
@@ -106,10 +106,10 @@ def index(request):
 			 'Polihimstroy. Pozhelanie i predlozhenie ot %s. Telephone:8%s. Email:%s. Text:%s' \
 			%(name, telephone, email, text)
 			# отправляем смс
-			sms_receivers = ['79276793788']
+			sms_receivers = ['79276793788', '79178683718']
 			smsresp = sendsms(sms_receivers, getintouch_text)
 			# отправляем email
-			email_receivers = ['anceladamusic@gmail.com']
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
 			emailresp = sendemail(email_receivers, getintouch_text)
 			if smsresp and emailresp:
 				return JsonResponse({'string': 'ok'})
@@ -141,10 +141,10 @@ def index(request):
 			Mesto otpravki: %s. Mesto naznachenia: %s. Objem gruza %s. Zakazchik: %s. %s
 			 """ %(unit_name, target_from, target_to, volume, name, contact)
 			# отправить смс
-			sms_receivers = ['79276793788']
+			sms_receivers = ['79276793788', '79178683718']
 			smsresp = sendsms(sms_receivers, text)
 			# отправить email
-			email_receivers = ['anceladamusic@gmail.com']
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
 			emailresp = sendemail(email_receivers, text)
 			if smsresp and emailresp:
 				return JsonResponse({'string': 'ok'})
@@ -167,10 +167,10 @@ def index(request):
 			name = translit(name, 'ru', reversed=True)
 			text = 'Polihimstroy. Zayavka na %s ot %s. %s' %(unit_name, name, contact)
 			# отправить смс
-			sms_receivers = ['79276793788']
+			sms_receivers = ['79276793788', '79178683718']
 			smsresp = sendsms(sms_receivers, text)
 			# отправить email
-			email_receivers = ['anceladamusic@gmail.com']
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
 			emailresp = sendemail(email_receivers, text)
 			if smsresp and emailresp:
 				return JsonResponse({'string': 'ok'})
