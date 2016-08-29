@@ -223,6 +223,17 @@ def index(request):
 			args['username'] = auth.get_user(request).id
 			args['orderstable'] = render_to_string('orderstable.html', args)
 			return JsonResponse({'string': args['orderstable']})
+		# страница paragraph unit unit
+		if string['method'] == 'paragraphunitunit':
+			args['par_id'] = string['par_id']
+			args['unit_id'] = string['unit_id']
+			args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
+		'Name', 'Description', 'id')
+			a = Paragraph.objects.get(id=args['par_id'])
+			args['paragraph_name'] = a.Name
+			args['transport_flag'] = a.TransportFlag
+			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
+			return JsonResponse({'string': args['paragraph_unit']})
 		# страница paragraph_unit
 		if string['method'] == 'paragraphunit':
 			args['par_id'] = string['unit']

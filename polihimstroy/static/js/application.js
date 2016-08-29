@@ -1,17 +1,22 @@
 $(document).ready(function(){
-
+	var par_id;
+	var unit_id
 	//history история
 	History.Adapter.bind(window, 'statechange', function(){
 		var State = History.getState();
 		window.location = State.hashedUrl;
 	});
 
+
 	//клик на unit
 	//переход на удовлетворяющий критерю unit
-	$('body').delegate('#item_unit', 'click', function(){
+	$('body').delegate('li#item_unit', 'click', function(){
 		par_id = $(this).attr('data-paragraph');
 		unit_id = $(this).attr('data-unit');
-		history.pushState({state:2}, 'paragraph_unit', '/paragraph/'+par_id+'/unit/'+unit_id)
+		history.pushState({state:2}, 'paragraph_unit', '/paragraph/'+par_id+'/unit/'+unit_id);
+		$('#paragraph_id').attr('data-id', par_id);
+		$('#unit_id').attr('data-id', unit_id);
+		/*paragraphUnitUnit(par_id, unit_id);*/
 	});
 
 	//клик на schema
@@ -282,6 +287,7 @@ $(document).ready(function(){
 
 	/*$('#paragraph_content').foundation('open');*/
 
+
 	//отобразить содержимое paragraph
 	$('.content').delegate('.a_paragraph_item', 'click', function(){
 		id = parseInt($(this).attr('data-id'));
@@ -356,6 +362,24 @@ var orders = function(id){
 	parameters['method'] = 'orders';
 	//записываем в url браузера
 	history.pushState({state:1}, 'orders', '/orders/')
+	makeAjax(parameters);
+}
+
+//загрузить страничку paragraph_unit _ unit
+var paragraphUnitUnit = function(par_id, unit_id){
+	//текущая страница как предидущая
+	updatePreviousCurrent('paragraphunitunit');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['par_id'] = parseInt(par_id);
+	parameters['unit_id'] = parseInt(unit_id);
+	parameters['method'] = 'paragraphunitunit';
+	console.log(parameters);
+	// записываем в url браузера
+	history.pushState({state:2}, 'paragraphunitunit', '/paragraph/'+par_id+'/unit/'+unit_id);
 	makeAjax(parameters);
 }
 
@@ -435,6 +459,11 @@ var makeAjax = function(parameters){
     			$('#maincontent').html(data['string']);
     			$('#maincontent').show(400);
     			loadingClose();
+			//если paragraph_unit unit страница
+			} else if (parameters['method'] == 'paragraphunitunit'){
+				$('#maincontent').html(data['string']);
+				$('#maincontent').show(400);
+				loadingClose();
 			//если страница заказов
 			} else if (parameters['method'] == 'orders'){
 				$('#maincontent').html(data['string']);
@@ -560,5 +589,9 @@ gotoPrevious = function(){
 		paragraphUnit(id);
 	} else if ($('#previous_page').html() == 'orders'){
 		orders();
+	} else if ($('#previous_page').html() == 'paragraphunitunit'){
+		par_id = parseInt($('#paragraph_id').attr('data-id'));
+		unit_id = parseInt($('#unit_id').attr('data-id'));
+		paragraphUnitUnit(par_id, unit_id);
 	}
 }
