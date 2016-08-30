@@ -80,6 +80,7 @@ $(document).ready(function(){
 			error = 1;
 		}
 		if (error == 0){
+			loadingOpen()
 			parameters = {};
 			parameters['method'] = 'getintouch';
 			parameters['name'] = name;
@@ -145,6 +146,7 @@ $(document).ready(function(){
 			error = 1;
 		}
 		if (error == 0){
+			loadingOpen();
 			parameters = {};
 			parameters['method'] = 'submit_transport_order';
 			parameters['name'] = name;
@@ -191,6 +193,7 @@ $(document).ready(function(){
 			error = 1;
 		}
 		if (error == 0){
+			loadingOpen();
 			parameters = {};
 			parameters['method'] = 'submit_order';
 			parameters['name'] = name;
@@ -528,6 +531,7 @@ var makeAjax = function(parameters){
 				$('#paragraph_content').foundation('open');
 			// если отправить заявку на транспорт
 			} else if (parameters['method'] == 'submit_transport_order'){
+				loadingClose();
 				$('#paragraph_content').foundation('close');
 				answer = data['string'];
 				if (answer == 'ok'){
@@ -541,6 +545,7 @@ var makeAjax = function(parameters){
     			}
 			// если отправить заявку
     		} else if (parameters['method'] == 'submit_order'){
+    			loadingClose();
     			$('#paragraph_content').foundation('close');
     			answer = data['string'];
     			if (answer == 'ok'){
@@ -554,6 +559,7 @@ var makeAjax = function(parameters){
     			}
 			// если оставить пожелание и предложение
 			} else if (parameters['method'] == 'getintouch'){
+				loadingClose();
 				answer = data['string'];
 				if (answer == 'ok'){
 					header = 'уведомление';

@@ -218,7 +218,7 @@ def index(request):
 			args['transport_orders'] = TransportOrder.objects.all().values('Unit__Name', 'Name', \
 				'From', 'To', 'Volume', 'watsup', 'DateTime', 'TelNo').order_by('-DateTime')
 			args['getintouch'] = GetInTouch.objects.all().values('Name', 'TelNo', 'Email', 'Text', \
-				'DateTime')
+				'DateTime').order_by('-DateTime')
 			args['username_name'] = auth.get_user(request).username
 			args['username'] = auth.get_user(request).id
 			args['orderstable'] = render_to_string('orderstable.html', args)
