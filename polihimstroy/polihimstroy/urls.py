@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^orders/$', views.orders),
     url(r'^contacts/$', views.contacts),
     url(r'^$', views.index, name='index'),
+    url(r'^(?P<unit_name>[a-z0-9_\ _+.,-]+)/$', views.oldlinks),
 ]

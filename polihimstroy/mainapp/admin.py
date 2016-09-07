@@ -19,6 +19,7 @@ class UnitAdmin(admin.ModelAdmin):
 		('Наименование', {'fields': ['Name']}),
 		('Описание', {'fields': ['Description']}),
 		('Параграф', {'fields': ['Paragraph']}),
+		('Транслит английского', {'fields': ['Eng']})
 	]
 admin.site.register(Paragraph, ParagraphAdmin)
 admin.site.register(Unit, UnitAdmin)

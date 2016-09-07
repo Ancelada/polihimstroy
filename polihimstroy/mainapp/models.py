@@ -28,6 +28,7 @@ class Unit(models.Model):
 	Name = models.CharField(max_length=200, null=True, blank=True)
 	Description = models.TextField(null=True, blank=True)
 	Paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)
+	Eng = models.CharField(max_length=200, null=True, blank=True)
 	def __str__(self):
 		return self.Name.encode('utf-8')
 

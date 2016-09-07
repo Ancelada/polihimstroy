@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from mainapp.models import *
@@ -67,7 +67,7 @@ def sendemail(email_receivers, text):
 			server = 'smtp.fullspace.ru'
 			port = 25
 			user_name = 'robot@polihimstroy.ru'
-			user_passwd = 'PDVAncel115648'
+			user_passwd = 'tzkpolihimstroy115648'
 			msg = MIMEText(text)
 			msg['Subject'] = subj
 			msg['From'] = me
@@ -228,7 +228,7 @@ def index(request):
 			args['par_id'] = string['par_id']
 			args['unit_id'] = string['unit_id']
 			args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
-		'Name', 'Description', 'id')
+		'Name', 'Description', 'id').order_by('Name')
 			a = Paragraph.objects.get(id=args['par_id'])
 			args['paragraph_name'] = a.Name
 			args['transport_flag'] = a.TransportFlag
@@ -245,7 +245,7 @@ def index(request):
 					'Name', 'Description', 'id').order_by('Name')
 			else:
 				args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
-					'Name', 'Description', 'id')
+					'Name', 'Description', 'id').order_by('Name')
 			args['paragraph_name'] = Paragraph.objects.get(id=args['par_id']).Name
 			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 			return JsonResponse({'string': args['paragraph_unit']})
@@ -305,7 +305,7 @@ def paragraph_unit(request, paragraph=1, unit=1):
 	args['par_id'] = paragraph
 	args['unit_id'] = int(unit)
 	args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
-		'Name', 'Description', 'id')
+		'Name', 'Description', 'id').order_by('Name')
 	a = Paragraph.objects.get(id=args['par_id'])
 	args['paragraph_name'] = a.Name
 	args['transport_flag'] = a.TransportFlag
@@ -351,3 +351,7 @@ def contacts(request):
 	args['login_panel'] = render_to_string('login_panel.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
+# старые ссылки
+def oldlinks(request, unit_name=0):
+	a = Unit.objects.get(Eng=unit_name)
+	return redirect('/paragraph/%s/unit/%s' % (a.Paragraph_id, a.id))
