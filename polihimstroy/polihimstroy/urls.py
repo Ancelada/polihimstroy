@@ -31,5 +31,6 @@ urlpatterns = [
     url(r'^contacts/$', views.contacts),
     url(r'^search/$', views.search),
     url(r'^$', views.index, name='index'),
+    url(r'^googlef7653975ea94db91.html$', views.submitgoogle),
     url(r'^(?P<unit_name>[a-z0-9_\ _+.,-]+)/$', views.oldlinks),
 ]

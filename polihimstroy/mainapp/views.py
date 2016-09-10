@@ -380,3 +380,7 @@ def search(request):
 def oldlinks(request, unit_name=0):
 	a = Unit.objects.get(Eng=unit_name)
 	return redirect('/paragraph/%s/unit/%s' % (a.Paragraph_id, a.id))
+
+# подтверждение google
+def submitgoogle(request):
+	return HttpResponse('googlef7653975ea94db91.html')
