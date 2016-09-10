@@ -7,6 +7,13 @@ $(document).ready(function(){
 		window.location = State.hashedUrl;
 	});
 
+	//поле поиск при набора
+	$('.content').delegate('#keyword', 'keyup', function(){
+		parameters = {};
+		parameters['method'] = 'searchkeyup';
+		parameters['word'] = $(this).val();
+		makeAjax(parameters);
+	});
 
 	//клик на unit
 	//переход на удовлетворяющий критерю unit
@@ -16,7 +23,6 @@ $(document).ready(function(){
 		history.pushState({state:2}, 'paragraph_unit', '/paragraph/'+par_id+'/unit/'+unit_id);
 		$('#paragraph_id').attr('data-id', par_id);
 		$('#unit_id').attr('data-id', unit_id);
-		/*paragraphUnitUnit(par_id, unit_id);*/
 	});
 
 	//клик на schema
@@ -32,6 +38,9 @@ $(document).ready(function(){
 	//если разлинковка = пусто, страница index
 	if (a.hash == "/"){
 		loadingIndex();
+	//если разлинковка = search, страница search
+	} else if (a.hash == '/search/'){
+		search();
 	//если разлинковка = login, страница login
 	} else if (a.hash == "/login/") {
 		login();
@@ -263,6 +272,11 @@ $(document).ready(function(){
 			$(this).attr('data-id', a+1);
 		});
 	}
+	//страница поиска
+	$('#search').on('click', function(){
+		search();
+	});
+
 	//страница контакты
 	$('#contact').on('click', function(){
 		contacts();
@@ -274,7 +288,7 @@ $(document).ready(function(){
 	});
 
 	//страница войти
-	$('#login_panel').delegate('#login', 'click', function(){
+	$('#login_panel').delegate('#logbut', 'click', function(){
 		login();
 	});
 
@@ -335,6 +349,21 @@ var makeNotification = function(type, header, text){
 	parameters['type'] = type;
 	parameters['header'] = header;
 	parameters['text'] = text;
+	makeAjax(parameters);
+}
+
+//загрузить страничку поиск
+var search = function(){
+	//текущая страничка как предидущая
+	updatePreviousCurrent('search');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['method'] = 'search';
+	// записываем в url браузера
+	history.pushState({state:5}, 'search', '/search');
 	makeAjax(parameters);
 }
 
@@ -462,6 +491,9 @@ var makeAjax = function(parameters){
     			$('#maincontent').html(data['string']);
     			$('#maincontent').show(400);
     			loadingClose();
+			//поиск по ключевому слову
+			} else if (parameters['method'] == 'searchkeyup'){
+				$('#result').html(data['string']);
 			//если paragraph_unit unit страница
 			} else if (parameters['method'] == 'paragraphunitunit'){
 				$('#maincontent').html(data['string']);
@@ -469,6 +501,11 @@ var makeAjax = function(parameters){
 				loadingClose();
 			//если страница заказов
 			} else if (parameters['method'] == 'orders'){
+				$('#maincontent').html(data['string']);
+				loadingClose();
+				$('#maincontent').show(400);
+			//если страница поиска
+			} else if (parameters['method'] == 'search'){
 				$('#maincontent').html(data['string']);
 				loadingClose();
 				$('#maincontent').show(400);

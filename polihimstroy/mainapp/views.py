@@ -87,6 +87,14 @@ def index(request):
 	args = {}
 	if request.method == 'POST':
 		string = simplejson.loads(request.body)
+		# поиск по ключевому слову
+		if string['method'] == 'searchkeyup':
+			word = string['word']
+			args['units'] = Unit.objects.filter(Name__icontains=word \
+				).values('id', 'Paragraph__TransportFlag', \
+				'Name', 'Description', 'Paragraph_id', 'Paragraph__Name')
+			args['searchresult'] = render_to_string('searchresult.html', args)
+			return JsonResponse({'string': args['searchresult']})
 		# показать карту
 		if string['method'] == 'schema':
 			schema = render_to_string('schema.html')
@@ -169,6 +177,7 @@ def index(request):
 			# отправить смс
 			sms_receivers = ['79276793788', '79178683718']
 			smsresp = sendsms(sms_receivers, text)
+			smsresp = 1
 			# отправить email
 			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
 			emailresp = sendemail(email_receivers, text)
@@ -253,6 +262,10 @@ def index(request):
 		if string['method'] == 'loadingindex':
 			args['Paragraph'] = Paragraph.objects.all().order_by('No')
 			args['content'] = render_to_string('index.html', args)
+			return JsonResponse({'string': args['content']})
+		# страница поиска search
+		if string['method'] == 'search':
+			args['content'] = render_to_string('search.html', args)
 			return JsonResponse({'string': args['content']})
 		# страница login
 		if string['method'] == 'login':
@@ -351,6 +364,18 @@ def contacts(request):
 	args['login_panel'] = render_to_string('login_panel.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
+
+# страница поиска
+def search(request):
+	args = {}
+	args['paragraph_unit'] = render_to_string('search.html', args)
+	args['balance'] = getbalance()
+	args['usermname_name'] = auth.get_user(request).username
+	args['username'] = auth.get_user(request).id
+	args['login_panel'] = render_to_string('login_panel.html', args)
+	template = loader.get_template('main.html')
+	return HttpResponse(template.render(args, request))
+
 # старые ссылки
 def oldlinks(request, unit_name=0):
 	a = Unit.objects.get(Eng=unit_name)

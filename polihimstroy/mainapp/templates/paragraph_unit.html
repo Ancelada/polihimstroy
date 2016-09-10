@@ -2,7 +2,7 @@
 <ul class="accordion" data-accordion data-allow-all-closed="true">
 	{% for unit in units %}
 		<li class="accordion-item{% if unit.id == unit_id %} is-active{% endif %}" id="item_unit" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{par_id}}" data-unit="{{unit.id}}">
-			<a href="#" class="accordion-title"><h3 class="subheader text-center">{{unit.Name}}</h3></a>
+			<a href="#" class="accordion-title"><h3 class="subheader text-center">{% if transport_flag %}{{paragraph_name}} {% endif %}{{unit.Name}}</h3></a>
 			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content>
 				<h4>{{unit.Name|upper}}</h4>
 				<h4>{{unit.Description|linebreaks}}</h4>

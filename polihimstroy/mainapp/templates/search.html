@@ -1,0 +1,17 @@
+<h3>Поиск</h3>
+<label for="keyword">Ключевое слово
+	<input type="text" id="keyword">
+</label>
+<div id="result">
+	
+</div>
+<script>
+	$('.content').foundation();
+	Foundation.Keyboard.register('Reveal', {
+      'ENTER': 'open',
+      'SPACE': 'open',
+      'ESCAPE': 'close',
+      'TAB': 'tab_forward',
+      'SHIFT_TAB': 'tab_backward'
+    });
+</script>
