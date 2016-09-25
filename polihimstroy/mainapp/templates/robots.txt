@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /orders/
+Disallow: /order_moderated/

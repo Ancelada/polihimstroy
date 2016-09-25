@@ -20,6 +20,8 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf import settings
 from mainapp import views
+from django.http import HttpResponse
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,7 +32,10 @@ urlpatterns = [
     url(r'^orders/$', views.orders),
     url(r'^contacts/$', views.contacts),
     url(r'^search/$', views.search),
+    url(r'^order_moderated/$', views.order_moderated),
     url(r'^$', views.index, name='index'),
-    url(r'^googlef7653975ea94db91.html$', views.submitgoogle),
+    url(r'^robots\.txt$', \
+     TemplateView.as_view(template_name='robots.txt', content_type="text/plain")),
+    url(r'^sitemap\.xml/$', views.buildsitemap),
     url(r'^(?P<unit_name>[a-z0-9_\ _+.,-]+)/$', views.oldlinks),
 ]

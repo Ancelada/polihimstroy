@@ -1,0 +1,203 @@
+{% if username %}
+	<h1 class="text-center">Модерирование заказов</h1>
+	<h3 class="text-center">Немодерированные заказы</h3>
+	<!-- Заявки -->
+	<h5 class="text-center">Заявки на химическое сырье или услуги</h5>
+	<table>
+		<thead>
+			<tr>
+				<th>Дата</th>
+				<th>Имя</th>
+				<th>Желаемый способ связи</th>
+				<th>Товар/услуга</th>
+				<th>Номер телефона</th>
+				<th>email</th>
+				<th>Текст</th>
+				<th>Действие</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for order in orders %}
+				<tr>
+					<td>{{order.DateTime}}</td>
+					<td>{{order.Name}}</td>
+					<td>{% if order.watsup == 1 %}whatsapp{% else %}телефон{% endif %}</td>
+					<td>{{order.Unit__Name}}</td>
+					<td>8{{order.TelNo}}</td>
+					<td>{{order.email}}</td>
+					<td>{{order.Text}}</td>
+					<td><button class="button secondary" id="moderate" data-type="order" data-id="{{order.id}}">Модерировать</button><br>
+					<button class="button alert" data-type="order" id="delete" data-id="{{order.id}}">Удалить</button></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<!-- перевозка грузов-->
+	<h5 class="text-center">Заявки на перевозку грузов</h5>
+	<table>
+		<thead>
+			<tr>
+				<th>Дата</th>
+				<th>Имя</th>
+				<th>Желаемый способ связи</th>
+				<th>Услуга</th>
+				<th>Номер телефона</th>
+				<th>Место отправки</th>
+				<th>Место назначения</th>
+				<th>Объем</th>
+				<th>email</th>
+				<th>Текст</th>
+				<th>Действие</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for to in transport_orders %}
+				<tr>
+					<td>{{to.DateTime}}</td>
+					<td>{{to.Name}}</td>
+					<td>{% if to.watsup == 1 %}whatsapp{% else %}телефон{% endif %}</td>
+					<td>{{to.Unit__Name}}</td>
+					<td>8{{to.TelNo}}</td>
+					<td>{{to.From}}</td>
+					<td>{{to.To}}</td>
+					<td>{{to.Volume}}</td>
+					<td>{{to.email}}</td>
+					<td>{{to.Text}}</td>
+					<td><button class="button secondary" id="moderate" data-type="transport_order" data-id="{{to.id}}">Модерировать</button><br><button class="button alert" id="delete" data-type="transport_order" data-id="{{to.id}}">Удалить</button></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<!-- пожелания и предложения -->
+	<h5 class="text-center">Пожелания и предложения</h5>
+	<table>
+		<thead>
+			<tr>
+				<th>Дата</th>
+				<th>Имя</th>
+				<th>Текст</th>
+				<th>Номер телефона</th>
+				<th>email</th>
+				<th>Действие</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for git in get_in_touch %}
+				<tr>
+					<td>{{git.DateTime}}</td>
+					<td>{{git.Name}}</td>
+					<td>{{git.Text}}</td>
+					<td>8{{git.TelNo}}</td>
+					<td>{{git.Email}}</td>
+					<td><button class="button secondary" id="moderate" data-type="get_in_touch" data-id="{{git.id}}">Модерировать</button><br><button class="button alert" id="delete" data-type="get_in_touch" data-id="{{git.id}}">Удалить</button></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<hr>
+	<h3 class="text-center">Модерированные заказы</h3>
+		<!-- Заявки -->
+		<h5 class="text-center">Заявки на химическое сырье или услуги</h5>
+		<table>
+			<thead>
+				<tr>
+					<th>Дата модерации</th>
+					<th>Тип заказчика</th>
+					<th>Наименование</th>
+					<th>Химическое сырье или услуга</th>
+					<th>Количество</th>
+					<th>Текст</th>
+					<th>Дата исполнения</th>
+					<th>Действие</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for om in order_moderated_order %}
+					<tr>
+						<td>{{om.OrderModerated__DateTime}}</td>
+						<td>{{om.Order__customerorder__Customer__Type}}</td>
+						<td>{{om.Order__customerorder__Name}}</td>
+						<td>{{om.Order__Unit__Name}}</td>
+						<td>{{om.Order__Quantity}}</td>
+						<td>{{om.OrderModerated__Text}}</td>
+						<td>{{om.Order__DeliveryDate}}</td>
+						<td><button class="button alert" id="delete_moderated" data-type="order" data-id="{{om.OrderModerated__id}}">Удалить</button></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<!-- Заявки на транспорт -->
+		<h5 class="text-center">Заявка на транспортировку</h5>
+		<table>
+			<thead>
+				<tr>
+					<th>Дата модерации</th>
+					<th>Тип заказчика</th>
+					<th>Наименование</th>
+					<th>Вид транспорта</th>
+					<th>Объем груза</th>
+					<th>Место отправки</th>
+					<th>Место назначения</th>
+					<th>Текст</th>
+					<th>Дата исполнения</th>
+					<th>Действие</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for tom in order_moderated_transport_order %}
+					<tr>
+						<td>{{tom.OrderModerated__DateTime}}</td>
+						<td>{{tom.TransportOrder__customertransportorder__Customer__Type}}</td>
+						<td>{{tom.TransportOrder__customertransportorder__Name}}</td>
+						<td>{{tom.TransportOrder__Unit__Name}}</td>
+						<td>{{tom.TransportOrder__Volume}}</td>
+						<td>{{tom.OrderModerated__From}}</td>
+						<td>{{tom.OrderModerated__To}}</td>
+						<td>{{tom.OrderModerated__Text}}</td>
+						<td>{{tom.TransportOrder__DeliveryDate}}</td>
+						<td><button class="button alert" id="delete_moderated" data-type="transport_order" data-id="{{tom.OrderModerated__id}}">Удалить</button></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<!-- Пожелание и предложения -->
+		<h5 class="text-center">Пожелание и предложение</h5>
+		<table>
+			<thead>
+				<tr>
+					<th>Дата модерации</th>
+					<th>Тип заказчика</th>
+					<th>Наименование</th>
+					<th>Химическое сырье или услуга</th>
+					<th>Количество</th>
+					<th>Текст</th>
+					<th>Дата исполнения</th>
+					<th>Действие</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for omgit in order_moderated_getintouch %}
+					<tr>
+						<td>{{omgit.OrderModerated__DateTime}}</td>
+						<td>{{omgit.GetInTouch__customergetintouch__Customer__Type}}</td>
+						<td>{{omgit.GetInTouch__customergetintouch__Name}}</td>
+						<td>{{omgit.GetInTouch__Unit__Name}}</td>
+						<td>{{omgit.GetInTouch__Quantity}}</td>
+						<td>{{omgit.OrderModerated__Text}}</td>
+						<td>{{omgit.GetInTouch__DeliveryDate}}</td>
+						<td><button class="button alert" id="delete_moderated" data-type="get_in_touch" data-id="{{omgit.OrderModerated__id}}">Удалить</button></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	<hr>
+	<div id="moderate_form" class="large-12 small-12 columns">
+		
+	</div>
+{% else %}
+	<h3>Необходимо войти в систему</h3>
+{% endif %}
+
+<script>
+	$('.content').foundation();
+</script>

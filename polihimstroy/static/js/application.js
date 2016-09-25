@@ -1,10 +1,88 @@
 $(document).ready(function(){
 	var par_id;
-	var unit_id
+	var unit_id;
+
 	//history история
 	History.Adapter.bind(window, 'statechange', function(){
 		var State = History.getState();
 		window.location = State.hashedUrl;
+	});
+
+	//удалить модерированную заявку
+	$('.content').delegate('#delete_moderated', 'click', function(){
+		loadingOpen();
+		$('#maincontent').hide(400);
+		parameters = {};
+		parameters['type'] = $(this).attr('data-type');
+		parameters['ordermoderated_id'] = parseInt($(this).attr('data-id'));
+		parameters['method'] = 'delete_moderated';
+		makeAjax(parameters);
+	});
+
+	//удалить заявку
+	$('.content').delegate('#delete', 'click', function(){
+		loadingOpen();
+		$('#maincontent').hide(400);
+		parameters = {};
+		parameters['type'] = $(this).attr('data-type');
+		parameters['order_id'] = parseInt($(this).attr('data-id'));
+		parameters['method'] = 'delete';
+		makeAjax(parameters);
+	});
+
+
+	//отправить модерирование заявки
+	$('.content').delegate('#submit_moderate', 'click', function(){
+		parameters = {};
+		if ($(this).attr('data-type') == 'order_moderate'){
+			loadingOpen();
+			$('#maincontent').hide(400);
+			parameters['type'] = 'order_moderate';
+			parameters['order_id'] = parseInt($(this).attr('data-id'));
+			parameters['customer_id'] = parseInt($('#customer option:selected')[0].value);
+			parameters['customer_name'] = $('#customer_name').val();
+			parameters['quantity'] = parseInt($('#quantity').val());
+			parameters['delivery_date'] = $('#delivery_date').val();
+			parameters['text'] = $('#text').val();
+			parameters['method'] = 'submit_moderate';
+			makeAjax(parameters);
+		} else if ($(this).attr('data-type') == 'transport_order_moderate'){
+			loadingOpen();
+			$('#maincontent').hide(400);
+			parameters['type'] =  'transport_order_moderate';
+			parameters['order_id'] = parseInt($(this).attr('data-id'));
+			parameters['customer_id'] = parseInt($('#customer option:selected')[0].value);
+			parameters['customer_name'] = $('#customer_name').val();
+			parameters['from'] = $('#from').val();
+			parameters['to'] = $('#to').val();
+			parameters['volume'] = parseInt($('#volume').val());
+			parameters['delivery_date'] = $('#delivery_date').val();
+			parameters['text'] = $('#text').val();
+			parameters['method'] = 'submit_moderate';
+			makeAjax(parameters);
+		} else if ($(this).attr('data-type') == 'getintouch_moderate'){
+			loadingOpen();
+			$('#maincontent').hide(400);
+			parameters['type'] = 'getintouch_moderate';
+			parameters['getintouch_id'] = parseInt($(this).attr('data-id'));
+			parameters['customer_id'] = parseInt($('#customer option:selected')[0].value);
+			parameters['customer_name'] = $('#customer_name').val();
+			parameters['unit'] = parseInt($('#unit option:selected')[0].value);
+			parameters['quantity'] = parseInt($('#quantity').val());
+			parameters['delivery_date'] = $('#delivery_date').val();
+			parameters['text'] = $('#text').val();
+			parameters['method'] = 'submit_moderate';
+			makeAjax(parameters);
+		}
+	});
+
+	//модерирование заявок и предложений
+	$('.content').delegate('#moderate', 'click', function(){
+		parameters = {};
+		parameters['order_type'] = $(this).attr('data-type');
+		parameters['id'] = parseInt($(this).attr('data-id'));
+		parameters['method'] = 'moderate_form';
+		makeAjax(parameters);
 	});
 
 	//поле поиск при набора
@@ -50,6 +128,9 @@ $(document).ready(function(){
 	//если разлинковка = contacts, страница contacts
 	} else if (a.hash == "/contacts/") {
 		contacts();
+	//eсли разлинковка = order_moderated, страница модерирование заказов
+	} else if (a.hash == '/order_moderated/'){
+		order_moderated();
 	}
 
 	
@@ -88,6 +169,10 @@ $(document).ready(function(){
 			makeNotification('alert', header, text);
 			error = 1;
 		}
+		$('#telephone').val('');
+		$('#name').val('');
+		$('#text').val('');
+		$('#e-mail').val('');
 		if (error == 0){
 			loadingOpen()
 			parameters = {};
@@ -105,7 +190,9 @@ $(document).ready(function(){
 		telephone = $('#telephone').val();
 		from = $('#from').val();
 		to = $('#to').val();
-		volume = $('#volume').val();
+		volume = parseInt($('#volume').val());
+		email = $('#email').val();
+		text = $('#text').val();
 		watsup = 0;
 		if ($('input#telmethod')[0].checked == true){
 			watsup = 0;
@@ -164,6 +251,8 @@ $(document).ready(function(){
 			parameters['from'] = from;
 			parameters['to'] = to;
 			parameters['volume'] = volume;
+			parameters['text'] = text;
+			parameters['email'] = email;
 			parameters['unit_id'] = parseInt($(this).attr('data-id'));
 			makeAjax(parameters);
 		}
@@ -174,6 +263,8 @@ $(document).ready(function(){
 	$('#paragraph_content').delegate('#submit_order', 'click', function(){
 		name = $('#name').val();
 		telephone = $('#telephone').val();
+		text = $('#text').val();
+		email = $('#email').val();
 		watsup = 0;
 		if ($('input#telmethod')[0].checked == true){
 			watsup = 0;
@@ -207,7 +298,9 @@ $(document).ready(function(){
 			parameters['method'] = 'submit_order';
 			parameters['name'] = name;
 			parameters['telephone'] = telephone;
+			parameters['text'] = text;
 			parameters['watsup'] = watsup;
+			parameters['email'] = email;
 			parameters['unit_id'] = parseInt($(this).attr('data-id'));
 			makeAjax(parameters);
 		}
@@ -292,6 +385,11 @@ $(document).ready(function(){
 		login();
 	});
 
+	//страница модерирвать заявки
+	$('#login_panel').delegate('#order_moderated', 'click', function(){
+		order_moderated();
+	});
+
 	//кнопка отправиться на предыдущую страницу
 	$('#goto_previous').on('click', function(){
 		gotoPrevious();
@@ -354,6 +452,7 @@ var makeNotification = function(type, header, text){
 
 //загрузить страничку поиск
 var search = function(){
+	window.scrollTo(0,0);
 	//текущая страничка как предидущая
 	updatePreviousCurrent('search');
 	//обновляем кнопку предидущая страница
@@ -369,6 +468,7 @@ var search = function(){
 
 // загрузить страничку контакты
 var contacts = function(id){
+	window.scrollTo(0,0);
 	//текущая страница как предидущая
 	updatePreviousCurrent('contacts');
 	//обновляем кнопку предидушая страница
@@ -431,8 +531,25 @@ var paragraphUnit = function(id){
 	makeAjax(parameters);
 }
 
+//загрузить страничку order_moderated
+var order_moderated = function(){
+	window.scrollTo(0,0);
+	//текущая страница как предидущая
+	updatePreviousCurrent('order_moderated');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['method'] = 'order_moderated';
+	// записываем в url браузера
+	history.pushState({state:5}, 'order_moderated', '/order_moderated');
+	makeAjax(parameters);
+}
+
 //загрузить страничку login
 var login = function(){
+	window.scrollTo(0,0);
 	//текущая страница как как предидущая
 	updatePreviousCurrent('login');
 	//обновляем кнопку предидущая страница
@@ -448,6 +565,7 @@ var login = function(){
 
 //загрузить страничку loadingindex
 var loadingIndex = function(){
+	window.scrollTo(0,0);
 	//текущая страница как как предидущая
 	updatePreviousCurrent('loadingindex');
 	//обновляем кнопку предидущая страница
@@ -491,6 +609,54 @@ var makeAjax = function(parameters){
     			$('#maincontent').html(data['string']);
     			$('#maincontent').show(400);
     			loadingClose();
+			//удалить модерированную заявку на сырье, транспорт, пожелание и предложение
+			} else if (parameters['method'] == 'delete_moderated'){
+				if (data['string'] == 'ok'){
+					//направляем уведомление
+					header = 'уведомление';
+					text = 'модерированный заказ или заявка удалена';
+					makeNotification('success', header, text);
+					// обновляем страницу модерирования заказов
+					$('#maincontent').html(data['page']);
+					loadingClose();
+					$('#maincontent').show(400);
+				}
+			//удалить завку на сырье, транспорт, пожелание и предложение
+			} else if (parameters['method'] == 'delete'){
+				if (data['string'] == 'ok'){
+					//направляем уведомление
+					header = 'уведомление';
+					text = 'заказ или заявка удалена';
+					makeNotification('success', header, text);
+					// обновляем страницу модерирования заказов
+					$('#maincontent').html(data['page']);
+					loadingClose();
+					$('#maincontent').show(400);
+				}
+			//отправить форму модерации
+			} else if (parameters['method'] == 'submit_moderate'){
+				if (data['string'] == 'ok'){
+					// направляем уведомление
+					header = 'уведомление';
+    				text = 'заказ промодерирован и доступен в списке в разделе Контакты';
+    				makeNotification('success', header, text);
+    				// обновляем страничку Модерирования заказов
+    				$('#maincontent').html(data['page']);
+					loadingClose();
+					$('#maincontent').show(400);
+				} else {
+					//направляем уведомление
+					header = 'уведомление';
+    				text = 'При записи значений в БД произошла ошибка';
+    				makeNotification('alert', header, text);
+    				// обновляем страничку Модерирования заказов
+    				$('#maincontent').html(data['page']);
+					loadingClose();
+					$('#maincontent').show(400);
+				}
+			//форма модерации
+			} else if (parameters['method'] == 'moderate_form'){
+				$('#moderate_form').html(data['string'])
 			//поиск по ключевому слову
 			} else if (parameters['method'] == 'searchkeyup'){
 				$('#result').html(data['string']);
@@ -511,6 +677,11 @@ var makeAjax = function(parameters){
 				$('#maincontent').show(400);
 			//если страница контактов
 			} else if (parameters['method'] == 'contacts'){
+				$('#maincontent').html(data['string']);
+				loadingClose();
+				$('#maincontent').show(400);
+			//если страница модерирования заказов
+			} else if (parameters['method'] == 'order_moderated'){
 				$('#maincontent').html(data['string']);
 				loadingClose();
 				$('#maincontent').show(400);
@@ -573,7 +744,7 @@ var makeAjax = function(parameters){
 				answer = data['string'];
 				if (answer == 'ok'){
     				header = 'уведомление';
-	    			text = 'заявка успешно отправлена';
+	    			text = 'заявка сформирвана';
 	    			makeNotification('success', header, text);	
     			} else if (answer == 'notok'){
     				header = 'ошибка сайта';
@@ -587,7 +758,7 @@ var makeAjax = function(parameters){
     			answer = data['string'];
     			if (answer == 'ok'){
     				header = 'уведомление';
-	    			text = 'заявка успешно отправлена';
+	    			text = 'заявка сформирована';
 	    			makeNotification('success', header, text);	
     			} else if (answer == 'notok'){
     				header = 'ошибка сайта';
@@ -600,13 +771,15 @@ var makeAjax = function(parameters){
 				answer = data['string'];
 				if (answer == 'ok'){
 					header = 'уведомление';
-					text = 'пожелание и предложение успешно отправлено';
+					text = 'пожелание и предложение отправлено';
 					makeNotification('success', header, text);
 				} else if (answer == 'notok'){
 					header = 'ошибка сайта';
 					text = 'при отправке формы возникла ошибка';
 					makeNotification('alert', header, text);
 				}
+				//обновляем страницу
+				$('#maincontent').html(data['paragraph_unit']);
     		// если показать карту
     		} else if (parameters['method'] == 'schema'){
     			$('#paragraph_content').html(data['string']);

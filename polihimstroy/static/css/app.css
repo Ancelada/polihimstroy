@@ -34,7 +34,7 @@ body{
 	z-index:-1;
 }
 .reveal{
-	position: absolute;
+	position: relative;
 }
 
 #page_head{
@@ -327,4 +327,12 @@ li{
 #menu-dropdown{
 	background:rgba(0, 0, 0, .5);
 	border:none;
+}
+
+.address{
+	color:#0a0a0a;
+}
+
+.address:hover{
+	color:#0a0a0a;
 }

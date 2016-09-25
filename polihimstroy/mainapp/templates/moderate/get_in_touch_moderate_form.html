@@ -1,0 +1,37 @@
+<h3 class="text-center">Форма модерирования пожелания и предложения</h3>
+<h5>Имя {{Name}}</h5>
+<label for="customer">Тип
+	<select id="customer">
+		{% for c in customer %}
+			<option value="{{c.id}}">{{c.Type}}</option>
+		{% endfor %}
+	</select>
+</label>
+<label for="customer_name">Наименование
+	<input type="text" id="customer_name">
+</label>
+<label for="unit">Наименование сырья
+	<select id="unit">
+		{% for unit in units %}
+			<option value="{{unit.id}}">{{unit.Name}}</option>
+		{% endfor %}
+	</select>
+</label>
+<label for="quantity">Количество (кг.)
+	<input type="number" id="quantity">
+</label>
+<label for="delivery_date">Дата исполнения пожелания и предложения
+	<input type="text" id="delivery_date">
+</label>
+<label for="text">Текст пожелания и предложения после модерации
+	<textarea id="text" cols="30" rows="10">{{Text}}</textarea>
+</label>
+<button id="submit_moderate" class="button secondary" data-type="getintouch_moderate" data-id="{{order_id}}">Принять</button>
+<script>
+	$(function(){
+		$('#delivery_date').fdatepicker({
+			format: 'mm-dd-yyyy',
+			disableDblClickSelection: true
+		});
+	});
+</script>

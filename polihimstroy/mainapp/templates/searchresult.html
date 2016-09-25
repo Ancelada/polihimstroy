@@ -2,9 +2,9 @@
 	{% for unit in units %}
 		<li class="accordion-item" id="item_unit" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{unit.Paragraph_id}}" data-unit="{{unit.id}}">
 			<a href="#" class="accordion-title"><h3 class="subheader text-center">{% if unit.Paragraph__TransportFlag %}{{unit.Paragraph__Name}} {% endif %}{{unit.Name}}</h3></a>
-			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content>
-				<h4>{{unit.Name|upper}}</h4>
-				<h4>{{unit.Description|linebreaks}}</h4>
+			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content itemscope itemtype="http://schema.org/ShoppingCenter">
+				<h4 itemprop="name">{{unit.Name|upper}}</h4>
+				<h4 itemprop="description">{{unit.Description|linebreaks}}</h4>
 				<button class="large button" id="makeorder" data-id="{{unit.id}}" data-transport="{{unit.Paragraph__TransportFlag}}">оставить заявку</button>
 			</div>
 		</li>

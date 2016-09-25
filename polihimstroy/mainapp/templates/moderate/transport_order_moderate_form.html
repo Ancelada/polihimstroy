@@ -1,0 +1,36 @@
+<h3 class="text-center">Форма модерирования заявки на транспортировку</h3>
+<h5>Заказчик {{Name}}</h5>
+<label for="customer">Тип заказчика
+	<select id="customer">
+		{% for c in customer %}
+			<option value="{{c.id}}">{{c.Type}}</option>
+		{% endfor %}
+	</select>
+</label>
+<label for="customer_name">Наименование заказчика
+	<input type="text" id="customer_name">
+</label>
+<label for="from">Место отправки
+	<input type="text" id="from" value="{{From}}">
+</label>
+<label for="to">Место назначения
+	<input type="text" id="to" value="{{To}}">
+</label>
+<label for="volume">Объем груза
+	<input type="number" id="volume" value="{{Volume}}">
+</label>
+<label for="delivery_date">Дата исполнения заказа
+	<input type="text" id="delivery_date">
+</label>
+<label for="text">Текст заявки после модерации
+	<textarea id="text" cols="30" rows="10">{{Text}}</textarea>
+</label>
+<button id="submit_moderate" class="button secondary" data-type="transport_order_moderate" data-id="{{order_id}}">Принять</button>
+<script>
+	$(function(){
+		$('#delivery_date').fdatepicker({
+			format: 'mm-dd-yyyy',
+			disableDblClickSelection: true
+		});
+	});
+</script>

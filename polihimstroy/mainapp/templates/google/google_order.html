@@ -1,0 +1,30 @@
+{% for i in all_orders %}
+	{% if i.status_schema == 'OrderDelivered' %}
+		{
+			"@context": "http://schema.org/",
+			"@type": "Order",
+			"seller": {
+				"@type": "Organization",
+				"name": "ТЗК Полихимстрой"
+			},
+			"customer": {
+				"@type": "{{i.customer_type}}",
+				"name": "{{i.customer_name}}"
+			},
+			"orderedItem": [
+				"@type": "OrderItem",
+				"orderQuantity": {{i.quantity}},
+				"orderedItem": {
+					"@type": "Product",
+					"name": "{{i.unit}}"
+				},
+				"orderItemStatus": "http://schema.org/{{i.status_schema}}",
+				"orderDelivery": {
+					"@type": "ParcelDelivery",
+					"expectedArrivalFrom": "{{i.date|date:"Y-m-d"}}",
+					"expectedArrivalUntil": "{{i.delivery_date|date:"Y-m-d"}}"
+				}
+			]
+		}
+	{% endif %}
+{% endfor %}
