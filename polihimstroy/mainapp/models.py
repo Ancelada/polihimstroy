@@ -156,3 +156,21 @@ class OrderModeratedParagraph(models.Model):
 		db_table = 'OrderModeratedParagraph'
 	OrderModerated = models.ForeignKey(OrderModerated, on_delete=models.CASCADE)
 	Paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)
+
+# заметки
+class KeyWord(models.Model):
+	class Meta():
+		db_table = 'KeyWord'
+	Name = models.CharField(max_length=200, null=True, blank=True)
+	Unit = models.ForeignKey(Unit, null=True, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.Name.encode('utf-8')
+
+# ключевые слова
+class Article(models.Model):
+	class Meta():
+		db_table = 'Article'
+	Text = models.TextField(null=True, blank=True)
+	KeyWord = models.ForeignKey(KeyWord, null=True, on_delete=models.CASCADE)
+	def __str__(self):
+		return self.Text.encode('utf-8')

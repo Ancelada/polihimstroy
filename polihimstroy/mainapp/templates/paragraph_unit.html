@@ -6,6 +6,13 @@
 			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content>
 				<h4>{{unit.Name|upper}}</h4>
 				<h4>{{unit.Description|linebreaks}}</h4>
+				<h4>
+					{% for kw in unit_keywords %}
+						{% if kw.Unit_id == unit.id %}
+							<button class="small button secondary">{{kw.Name}}</button>
+						{% endif %}
+					{% endfor %}
+				</h4>
 				<button class="large button" id="makeorder" data-id="{{unit.id}}" data-transport="{{transport_flag}}">оставить заявку</button>
 			</div>
 		</li>

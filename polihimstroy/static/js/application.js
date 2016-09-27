@@ -126,7 +126,7 @@ $(document).ready(function(){
 	} else if (a.hash == "/orders/") {
 		orders();
 	//если разлинковка = contacts, страница contacts
-	} else if (a.hash == "/contacts/") {
+	} else if (a.hash == "/contacts") {
 		contacts();
 	//eсли разлинковка = order_moderated, страница модерирование заказов
 	} else if (a.hash == '/order_moderated/'){

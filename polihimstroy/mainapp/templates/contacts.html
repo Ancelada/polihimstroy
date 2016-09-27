@@ -53,24 +53,24 @@
 		<iframe itemprop="hasMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2240.684805875655!2d49.04827095158754!3d55.833429980479615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x415952ec487c53c9%3A0x622b99f58f81d22f!2z0YPQuy4g0JLQvtGB0YHRgtCw0L3QuNGPLCAxMDAsINCa0LDQt9Cw0L3RjCwg0KDQtdGB0L8uINCi0LDRgtCw0YDRgdGC0LDQvSwgNDIwMDk1!5e0!3m2!1sru!2sru!4v1471777301847" width="100%" height="100%" frameborder="0" style="border:0" allowfullscreen></iframe>
 	</div>
 	<div class="large-12 small-12 columns">
-		<h5>Адрес: <a href="#" class="address">420095</a>, <a href="#" class="address">Россия</a>, <a href="#" class="address">Респ.Татарстан, г. Казань, ул. Восстания, 100</a></h5>
+		<h5>Адрес: <a class="address">420095</a>, <a class="address">Россия</a>, <a class="address">Респ.Татарстан, г. Казань, ул. Восстания, 100</a></h5>
 	</div>
 	<div class="large-12 small-12 columns">
 		<h5>
 		Телефон:
-		<a href="#" style="color:#0a0a0a">+79178683718</a>	
+		<a style="color:#0a0a0a">+79178683718</a>	
 		</h5>
 	</div>
 	<div class="large-12 small-12 columns">
 		<h5>
 		Электронная почта:
-		<a href="#" style="color:#0a0a0a">2502505@mail.ru</a>	
+		<a style="color:#0a0a0a">2502505@mail.ru</a>	
 		</h5>
 	</div>
 </div>
 <div class="large-12 small-12 columns">
 	<hr>
-	<h3 class="text-center">История оставленных заявок на сырье и услуги, пожеланий и предложений</h3>
+	<h3 class="text-center">История</h3>
 	<table>
 		<thead>
 			<tr>
@@ -91,7 +91,7 @@
 					<td>{{i.date|date:"d-m-Y H-i"}}</td>
 					<td>{{i.name|truncatechars:4}}</td>
 					<td>{% if i.unit %}<a href="/paragraph/{{i.paragraph_id}}/unit/{{i.unit_id}}" style="color:#2199e8;">{{i.unit|truncatechars:12}}</a>{% endif %}</td>
-					<td>{{i.text|truncatechars:12}}</td>
+					<td>{{i.text|truncatechars:25}}</td>
 					<td>{% if i.customer_type %}{% if i.customer_type == 'Person' %}физ. лицо{% elif i.customer_type == 'Organization' %}организация{% endif %}{% endif %}</td>
 					<td>{% if i.customer_name %}{{i.customer_name|truncatechars:4}}{% endif %}</td>
 					<td>{% if i.quantity %}{{i.quantity}}{% endif %}</td>

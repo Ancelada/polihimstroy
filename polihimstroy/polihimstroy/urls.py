@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^paragraph/(?P<paragraph>[0-9]+)/unit/(?P<unit>[0-9]+)$', views.paragraph_unit),
     url(r'^login/$', views.login),
     url(r'^orders/$', views.orders),
-    url(r'^contacts/$', views.contacts),
+    url(r'^contacts$', views.contacts),
     url(r'^search/$', views.search),
     url(r'^order_moderated/$', views.order_moderated),
     url(r'^$', views.index, name='index'),

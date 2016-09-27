@@ -3,6 +3,18 @@
 from django.contrib import admin
 from mainapp.models import *
 # Register your models here.
+class KeyWordAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Словосочетание', {'fields': ['Name']}),
+		('Услуга или сырье', {'fields': ['Unit']})
+	]
+
+class ArticleAdmin(admin.ModelAdmin):
+	fieldsets = [
+		('Текст', {'fields': ['Text']}),
+		('Словосочетание', {'fields': ['KeyWord']})
+	]
+
 class ParagraphAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Наименование', {'fields': ['Name']}),
@@ -38,6 +50,8 @@ class GetInTouchAdmin(admin.ModelAdmin):
 		('Заказчик', {'fields': ['Customer']}),
 		('Дата доставки', {'fields': ['DeliveryDate']})
 	]
+admin.site.register(Article, ArticleAdmin)
+admin.site.register(KeyWord, KeyWordAdmin)
 admin.site.register(GetInTouch, GetInTouchAdmin)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Paragraph, ParagraphAdmin)

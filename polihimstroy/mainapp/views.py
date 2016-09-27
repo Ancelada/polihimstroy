@@ -412,6 +412,7 @@ def index(request):
 			a = Paragraph.objects.get(id=args['par_id'])
 			args['paragraph_name'] = a.Name
 			args['transport_flag'] = a.TransportFlag
+			args['unit_keywords'] = KeyWord.objects.all()
 			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 			return JsonResponse({'string': args['paragraph_unit']})
 		# страница paragraph_unit
@@ -427,6 +428,7 @@ def index(request):
 				args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
 					'Name', 'Description', 'id').order_by('Name')
 			args['paragraph_name'] = Paragraph.objects.get(id=args['par_id']).Name
+			args['unit_keywords'] = KeyWord.objects.all()
 			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 			return JsonResponse({'string': args['paragraph_unit']})
 		# страница index
@@ -455,7 +457,8 @@ def index(request):
 	getmainvalues(args, request)
 	args['Paragraph'] = Paragraph.objects.all().order_by('No')
 	# мета теги
-	args['description'] = 'Химическое сырье, перевозка грузов, собственная спецтехника.'
+	# args['description'] = 'Химическое сырье, перевозка грузов, собственная спецтехника.'
+	args['description'] = render_to_string('meta_index_keywords.html', args)
 	args['keywords'] = render_to_string('meta_index_keywords.html', args)
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
@@ -483,9 +486,11 @@ def paragraph(request, paragraph=1):
 	a = Paragraph.objects.get(id=args['par_id'])
 	args['paragraph_name'] = a.Name
 	args['transport_flag'] = a.TransportFlag
+	args['unit_keywords'] = KeyWord.objects.all()
 	args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 	# meta тэг
-	args['description'] = args['paragraph_name']
+	# args['description'] = args['paragraph_name']
+	args['description'] = render_to_string('meta_paragraph_keywords.html', args)
 	args['keywords'] = render_to_string('meta_paragraph_keywords.html', args)
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
@@ -508,12 +513,14 @@ def paragraph_unit(request, paragraph=1, unit=1):
 	for i in args['units']:
 		if i['id'] == args['unit_id']:
 			args['unit_name'] = i['Name']
+			args['unit_description'] = i['Description']
 	a = Paragraph.objects.get(id=args['par_id'])
 	args['paragraph_name'] = a.Name
 	args['transport_flag'] = a.TransportFlag
+	args['unit_keywords'] = KeyWord.objects.all()
 	args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 	# meta тэг
-	args['description'] = render_to_string('meta_paragraph_unit_keywords.html', args)
+	args['description'] = args['unit_description']
 	args['keywords'] = render_to_string('meta_paragraph_unit_keywords.html', args)
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
@@ -630,6 +637,10 @@ def contacts_content(args):
 		 'status': 'рассмотрена', 'unit_id': i['GetInTouch__Unit__id'], \
 		 'paragraph_id': i['GetInTouch__Unit__Paragraph_id'], 'status_schema': 'OrderDelivered'})
 	args['all_orders'] = sorted(args['all_orders'], key=lambda k: k['date'], reverse=True)
+	args['all_orders_delivered'] = []
+	for i in args['all_orders']:
+		if i['status_schema'] == 'OrderDelivered':
+			args['all_orders_delivered'].append(i)
 	# google разметка заказы
 	args['order'] = render_to_string('google/google_order.html', args)
 	args['paragraph_unit'] = render_to_string('contacts.html', args)
@@ -657,6 +668,10 @@ def contacts(request):
 def search(request):
 	args = {}
 	getmainvalues(args, request)
+	# мета описания
+	args['description'] = 'Поиск по ключевому слову'
+	args['keywords'] = 'По ключевому слову, нечеткий поиск'
+	args['meta'] = render_to_string('meta.html', args)
 	args['paragraph_unit'] = render_to_string('search.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
