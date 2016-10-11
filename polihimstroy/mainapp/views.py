@@ -34,8 +34,12 @@ def getbalance():
 	params['api_secret'] = '76bcfe7a'
 	url = \
 	 'https://rest.nexmo.com/account/get-balance?api_key=%s&api_secret=%s' %('42a091e3', '76bcfe7a')
-	f = urlopen(url)
-	json_resp = json.load(f)
+	try:
+		f = urlopen(url)
+		json_resp = json.load(f)
+	except:
+		json_resp = {}
+		json_resp['value'] = 0
 	return json_resp['value']
 
 #отправить sms
@@ -88,6 +92,16 @@ def index(request):
 	args = {}
 	if request.method == 'POST':
 		string = simplejson.loads(request.body)
+		# показать статью
+		if string['method'] == 'get_article':
+			paragraph_id = string['paragraph_id']
+			unit_id = string['unit_id']
+			keyword_id = string['keyword_id']
+			args['unit_name'] = Unit.objects.get(id=unit_id).Name
+			args['article_text'] = Article.objects.filter(KeyWord_id=keyword_id)[0].Text
+			args['article_keyword'] = KeyWord.objects.filter(id=keyword_id)[0].Name
+			article = render_to_string('article.html', args)
+			return JsonResponse({'string': article})
 		# удалить модерированную заявку на сырье, транспорт, пожелание и предложение
 		if string['method'] == 'delete_moderated':
 			ordermoderated_id = string['ordermoderated_id']
@@ -270,19 +284,19 @@ def index(request):
 			 'Polihimstroy. Pozhelanie i predlozhenie ot %s. Telephone:8%s. Email:%s. Text:%s' \
 			%(name, telephone, email, text)
 			# отправляем смс
-			# sms_receivers = ['79276793788', '79178683718']
-			# smsresp = sendsms(sms_receivers, getintouch_text)
-			smsresp = 1
+			sms_receivers = ['79276793788', '79178683718']
+			smsresp = sendsms(sms_receivers, getintouch_text)
+			# smsresp = 1
 			# отправляем email
-			# email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
-			# emailresp = sendemail(email_receivers, getintouch_text)
-			emailresp = 1
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
+			emailresp = sendemail(email_receivers, getintouch_text)
+			# emailresp = 1
 			getmainvalues(args, request)
 			contacts_content(args)
 			if smsresp and emailresp:
-				return JsonResponse({'string': 'ok', 'paragraph_unit': args['paragraph_unit']})
+				return JsonResponse({'string': 'ok', 'paragraph_unit': args['content']})
 			else:
-				return JsonResponse({'string': 'notok', 'paragraph_unit': args['paragraph_unit']})
+				return JsonResponse({'string': 'notok', 'paragraph_unit': args['content']})
 		# отправить форму заявки на транспорт
 		if string['method'] == 'submit_transport_order':
 			name = string['name']
@@ -311,13 +325,13 @@ def index(request):
 			Mesto otpravki: %s. Mesto naznachenia: %s. Objem gruza %s. Zakazchik: %s. %s
 			 """ %(unit_name, target_from, target_to, volume, name, contact)
 			# отправить смс
-			# sms_receivers = ['79276793788', '79178683718']
-			# smsresp = sendsms(sms_receivers, text)
-			smsresp = 1
+			sms_receivers = ['79276793788', '79178683718']
+			smsresp = sendsms(sms_receivers, text)
+			# smsresp = 1
 			# отправить email
-			# email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
-			# emailresp = sendemail(email_receivers, text)
-			emailresp = 1
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
+			emailresp = sendemail(email_receivers, text)
+			# emailresp = 1
 			if smsresp and emailresp:
 				return JsonResponse({'string': 'ok'})
 			else:
@@ -341,13 +355,13 @@ def index(request):
 			name = translit(name, 'ru', reversed=True)
 			text = 'Polihimstroy. Zayavka na %s ot %s. %s' %(unit_name, name, contact)
 			# отправить смс
-			# sms_receivers = ['79276793788', '79178683718']
-			# smsresp = sendsms(sms_receivers, text)
-			smsresp = 1
+			sms_receivers = ['79276793788', '79178683718']
+			smsresp = sendsms(sms_receivers, text)
+			# smsresp = 1
 			# отправить email
-			# email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
-			# emailresp = sendemail(email_receivers, text)
-			emailresp = 1
+			email_receivers = ['anceladamusic@gmail.com', '2502505@mail.ru']
+			emailresp = sendemail(email_receivers, text)
+			# emailresp = 1
 			if smsresp and emailresp:
 				return JsonResponse({'string': 'ok'})
 			else:
@@ -413,8 +427,31 @@ def index(request):
 			args['paragraph_name'] = a.Name
 			args['transport_flag'] = a.TransportFlag
 			args['unit_keywords'] = KeyWord.objects.all()
+			args['articles'] = Article.objects.filter(KeyWord__Unit__Paragraph__id=args['par_id'])
 			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 			return JsonResponse({'string': args['paragraph_unit']})
+		# страница article
+		if string['method'] == 'article':
+			args['par_id'] = string['paragraph_id']
+			args['unit_id'] = string['unit_id']
+			args['article_id'] = string['article_id']
+			args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
+				'Name', 'Description', 'id', 'Paragraph__Name').order_by('Name')
+			for i in args['units']:
+				if i['id'] == args['unit_id']:
+					args['unit_name'] = i['Name']
+					args['unit_description'] = i['Description']
+			a = Paragraph.objects.get(id=args['par_id'])
+			args['paragraph_name'] = a.Name
+			args['transport_flag'] = a.TransportFlag
+			args['unit_keywords'] = KeyWord.objects.all()
+			# заполняем статью
+			args['article_text'] = Article.objects.get(id=args['article_id']).Text
+			args['article_keyword'] = KeyWord.objects.filter(article__id=args['article_id'])[0].Name
+			args['article_ownerurl'] = Article.objects.get(id=args['article_id']).OwnerUrl
+			args['article'] = render_to_string('article.html', args)
+			paragraph_unit = render_to_string('paragraph_unit.html', args)
+			return JsonResponse({'string': paragraph_unit, 'article': article})
 		# страница paragraph_unit
 		if string['method'] == 'paragraphunit':
 			args['par_id'] = string['unit']
@@ -429,6 +466,7 @@ def index(request):
 					'Name', 'Description', 'id').order_by('Name')
 			args['paragraph_name'] = Paragraph.objects.get(id=args['par_id']).Name
 			args['unit_keywords'] = KeyWord.objects.all()
+			args['articles'] = Article.objects.filter(KeyWord__Unit__Paragraph__id=args['par_id'])
 			args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
 			return JsonResponse({'string': args['paragraph_unit']})
 		# страница index
@@ -456,12 +494,27 @@ def index(request):
 			return JsonResponse({'string': args['message']})
 	getmainvalues(args, request)
 	args['Paragraph'] = Paragraph.objects.all().order_by('No')
+	args['content'] = render_to_string('index.html', args)
+	# прейскурант
+	args['units'] = Unit.objects.all().values('id', 'Name', 'Paragraph_id', \
+		'CanBuyInCubes', 'CanLoadUnload', 'DeliveryInRegion').order_by('Name')
+	args['price_table'] = render_to_string('price_table.html', args)
 	# мета теги
-	# args['description'] = 'Химическое сырье, перевозка грузов, собственная спецтехника.'
-	args['description'] = render_to_string('meta_index_keywords.html', args)
-	args['keywords'] = render_to_string('meta_index_keywords.html', args)
+	args['title'] = \
+	 'Химическое сырье, бочки, кубовые ёмкости, изделия из полипропилена.'
+	args['description'] = 'Химическое сырье, автошампунь (пена), продукция для разметки дорог, бочки, кубовые ёмкости, перевозка грузов (транспортировка), теплоноситель, антифриз, тосол, изделия из полипропилена, собственная спецтехника.'
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
+	args['ld_json'] = []
+	for i in args['Paragraph']:
+		a = {'@context': 'http://schema.org', '@type': 'ItemList', \
+			'url': 'http://polihimstroy/%s' % i.id, 'itemListElement': []}
+		for j in args['units']:
+			if i.id == j['Paragraph_id']:
+				b = {'@type': 'Product', 'url': 'http://polihimstroy.ru/paragraph/%s/unit/%s' % (i.id, \
+					j['id']), 'name': j['Name']}
+				a['itemListElement'].append(b)
+		args['ld_json'].append(a)
 	args['index'] = render_to_string('google/google_structure_index.html', args)
 	args['structure'] = render_to_string('google/google_structure.html', args)
 	template = loader.get_template('main.html')
@@ -484,14 +537,16 @@ def paragraph(request, paragraph=1):
 		args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
 			'Name', 'Description', 'id', 'Paragraph_id', 'Paragraph__Name')
 	a = Paragraph.objects.get(id=args['par_id'])
+	# заголовок страницы
+	args['title'] = a.Name
 	args['paragraph_name'] = a.Name
 	args['transport_flag'] = a.TransportFlag
 	args['unit_keywords'] = KeyWord.objects.all()
-	args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
+	args['articles'] = Article.objects.filter(KeyWord__Unit__Paragraph__id=args['par_id'])
+	args['content'] = render_to_string('paragraph_unit.html', args)
 	# meta тэг
 	# args['description'] = args['paragraph_name']
-	args['description'] = render_to_string('meta_paragraph_keywords.html', args)
-	args['keywords'] = render_to_string('meta_paragraph_keywords.html', args)
+	args['description'] = render_to_string('meta_paragraph_keywords.html', {'units': args['units'][:6]})
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
 	args['paragraph'] = render_to_string('google/google_structure_paragraph.html', args)
@@ -518,8 +573,10 @@ def paragraph_unit(request, paragraph=1, unit=1):
 	args['paragraph_name'] = a.Name
 	args['transport_flag'] = a.TransportFlag
 	args['unit_keywords'] = KeyWord.objects.all()
-	args['paragraph_unit'] = render_to_string('paragraph_unit.html', args)
+	args['articles'] = Article.objects.filter(KeyWord__Unit__Paragraph__id=args['par_id'])
+	args['content'] = render_to_string('paragraph_unit.html', args)
 	# meta тэг
+	args['title'] = args['unit_name']
 	args['description'] = args['unit_description']
 	args['keywords'] = render_to_string('meta_paragraph_unit_keywords.html', args)
 	args['meta'] = render_to_string('meta.html', args)
@@ -537,8 +594,13 @@ def paragraph_unit(request, paragraph=1, unit=1):
 # страница login
 def login(request):
 	args = {}
+	args['page'] = 'login'
 	getmainvalues(args, request)
-	args['paragraph_unit'] = render_to_string('login.html', args)
+	# meta тэг
+	args['title'] = 'Вход в систему'
+	args['description'] = 'Вход в ситему. Имя пользователя. Пароль.'
+	args['meta'] = render_to_string('meta.html', args)
+	args['content'] = render_to_string('login.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
 
@@ -548,7 +610,7 @@ def orders(request):
 	getmainvalues(args, request)
 	args['orders'] = Order.objects.all().values('Unit__Name', 'Name', 'watsup', 'DateTime', \
 		 'TelNo').order_by('-DateTime')
-	args['paragraph_unit'] = render_to_string('orderstable.html', args)
+	args['content'] = render_to_string('orderstable.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
 
@@ -643,16 +705,17 @@ def contacts_content(args):
 			args['all_orders_delivered'].append(i)
 	# google разметка заказы
 	args['order'] = render_to_string('google/google_order.html', args)
-	args['paragraph_unit'] = render_to_string('contacts.html', args)
+	args['content'] = render_to_string('contacts.html', args)
 
 # страница контакты
 def contacts(request):
 	args = {}
+	args['page'] = 'contacts'
 	getmainvalues(args, request)
 	contacts_content(args)
 	# мета описания
-	args['description'] = 'Контакты'
-	args['keywords'] = '420095,Респ.Татарстан,г. Казань,ул. Восстания,100'
+	args['title'] = 'Оставайтесь на связи.'
+	args['description'] = 'Вы можете оставить свои пожелания и предлжения заполнив форму ниже или позвонив по телефону. Адрес: 420095. Россия, респ. Татарстан, г. Казань, ул. Восстания, 100. История.'
 	args['meta'] = render_to_string('meta.html', args)
 	# блок структурированных данных ld+json
 	args['contacts'] = render_to_string( \
@@ -667,12 +730,13 @@ def contacts(request):
 # страница поиска
 def search(request):
 	args = {}
+	args['page'] = 'search'
 	getmainvalues(args, request)
 	# мета описания
-	args['description'] = 'Поиск по ключевому слову'
-	args['keywords'] = 'По ключевому слову, нечеткий поиск'
+	args['title'] = 'Поиск'
+	args['description'] = 'Поиск. Ключевое слово.'
 	args['meta'] = render_to_string('meta.html', args)
-	args['paragraph_unit'] = render_to_string('search.html', args)
+	args['content'] = render_to_string('search.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
 
@@ -726,7 +790,48 @@ def order_moderated(request):
 	args = {}
 	getmainvalues(args, request)
 	order_moderated_content(args)
-	args['order_moderated'] = render_to_string('login_panel.html', args)
+	args['login_panel'] = render_to_string('login_panel.html', args)
+	args['content'] = render_to_string('order_moderated.html', args)
+	template = loader.get_template('main.html')
+	return HttpResponse(template.render(args, request))
+
+def article(request, paragraph=1, unit=1, article=1):
+	args = {}
+	getmainvalues(args, request)
+	args['par_id'] = paragraph
+	args['unit_id'] = int(unit)
+	args['units'] = Unit.objects.filter(Paragraph_id=args['par_id']).values( \
+		'Name', 'Description', 'id', 'Paragraph__Name').order_by('Name')
+	for i in args['units']:
+		if i['id'] == args['unit_id']:
+			args['unit_name'] = i['Name']
+			args['unit_description'] = i['Description']
+	a = Paragraph.objects.get(id=args['par_id'])
+	args['paragraph_name'] = a.Name
+	args['transport_flag'] = a.TransportFlag
+	args['unit_keywords'] = KeyWord.objects.all()
+	args['articles'] = Article.objects.filter(KeyWord__Unit__Paragraph__id=args['par_id'])
+	# заполняем статью
+	args['article_id'] = article
+	args['article_text'] = Article.objects.get(id=article).Text
+	args['article_keyword'] = KeyWord.objects.filter(article__id=article)[0].Name
+	args['article_ownerurl'] = Article.objects.get(id=article).OwnerUrl
+	args['article'] = render_to_string('article.html', args)
+	args['content'] = render_to_string('paragraph_unit.html', args)
+	# meta тэг
+	args['title'] = u'%s' % args['article_keyword']
+	args['description'] = args['article_text'][:199]
+	args['meta_keywords_list'] = KeyWord.objects.filter(Unit_id=args['unit_id'])
+	args['keywords'] = render_to_string('meta_paragraph_unit_article_keywords.html', args)
+	args['meta'] = render_to_string('meta.html', args)
+	# блок структурированных данных ld+json
+	args['paragraph_google_unit_article'] = render_to_string( \
+		'google/google_structure_paragraph_unit_article.html', args)
+	args['structure'] = render_to_string('google/google_structure.html', args)
+	# блок навигации google
+	args['navigation_paragraph_unit_article'] = render_to_string( \
+		'google/site_navigation_paragraph_unit_article.html', args)
+	args['site_navigation_element'] = render_to_string('google/site_navigation.html', args)
 	template = loader.get_template('main.html')
 	return HttpResponse(template.render(args, request))
 
@@ -737,6 +842,10 @@ def oldlinks(request, unit_name=0):
 	except:
 		if unit_name == 'address':
 			return redirect('/contacts')
+		elif unit_name == 'nash-adres/':
+			return redirect('/contacts')
+		elif unit_name == 'katalog-produktsii':
+			return redirect('/')
 		elif unit_name == 'o_kompanii':
 			return redirect('/contacts')
 		elif unit_name == 'lakokrasochnaya-produkciya':
@@ -790,6 +899,9 @@ def buildsitemap(request):
 	args['paragraph'] = render_to_string('sitemap_paragraph.html', {'a': a})
 	# страница paragraph unit
 	a = Unit.objects.all().values('Paragraph_id', 'id')
-	args['paragraph_unit'] = render_to_string('sitemap_paragraph_unit.html', {'a': a})	
+	args['paragraph_unit'] = render_to_string('sitemap_paragraph_unit.html', {'a': a})
+	# страница paragraph_unit_article
+	a = Article.objects.all().values('KeyWord__Unit__Paragraph__id', 'KeyWord__Unit__id', 'id')
+	args['paragraph_unit_article'] = render_to_string('sitemap_paragraph_unit_article.html', {'a': a})	
 	template = loader.get_template('sitemap.xml')
 	return HttpResponse(template.render(args, request), content_type="text/plain")

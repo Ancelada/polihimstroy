@@ -1,1 +1,1 @@
-{% for p in Paragraph %}{{p.Name}},{% endfor %}
+{% for p in Paragraph %}{% if forloop.last %}{{p.Name}}{% else %}{{p.Name}},{% endif %}{% endfor %}

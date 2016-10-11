@@ -1,7 +1,7 @@
 <ul class="accordion" data-accordion data-allow-all-closed="true" id="searchresult_accordion">
 	{% for unit in units %}
-		<li class="accordion-item" id="item_unit" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{unit.Paragraph_id}}" data-unit="{{unit.id}}">
-			<a href="#" class="accordion-title"><h3 class="subheader text-center">{% if unit.Paragraph__TransportFlag %}{{unit.Paragraph__Name}} {% endif %}{{unit.Name}}</h3></a>
+		<li class="accordion-item" id="item_unit" data-accordion-item data-id="{{unit.id}}">
+			<a href="#" class="accordion-title" data-paragraph="{{unit.Paragraph_id}}" data-unit="{{unit.id}}"><h3 class="subheader text-center">{% if unit.Paragraph__TransportFlag %}{{unit.Paragraph__Name}} {% endif %}{{unit.Name}}</h3></a>
 			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content itemscope itemtype="http://schema.org/ShoppingCenter">
 				<h4 itemprop="name">{{unit.Name|upper}}</h4>
 				<h4 itemprop="description">{{unit.Description|linebreaks}}</h4>

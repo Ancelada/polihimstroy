@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
   <meta content="user-scalable=yes" name="viewport">
+  <meta name="yandex-verification" content="feed7ceb05e8a114" />
   <meta name="google-site-verification" content="bhjPFe7eN--FqCdT7MC0RSrLZlx574_z_9EJoKNhtGc" />
   {{meta}}
-  <title>{{description}}</title>
-	<!-- <title>Химическое сырье, изделия из полипропилена, перевозка грузов, собственная спецтехника. Полихимстрой</title> -->
+  <title>{{title}}</title>
   	{% load staticfiles %}
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}">
     <!-- <script src="{% static 'js/jquery.min.js' %}"></script>
@@ -33,74 +33,172 @@
   ga('send', 'pageview');
 
 </script>
-<script type="application/ld+json">
-  {{site_navigation_element}}
-</script>
-<script type="application/ld+json">
-  {{structure}}
-</script>
-<script type="application/ld+json">
-  {{order}}
-</script>
+{% if site_navigation_element %}
+  <script type="application/ld+json">
+    {{site_navigation_element}}
+  </script>
+{% endif %}
+
+{% if structure %}
+  <script type="application/ld+json">
+    {{structure}}
+  </script>
+{% endif %}
+
+{% if order %}
+  <script type="application/ld+json">
+    {{order}}
+  </script>
+{% endif %}
 
 </head>
 <body>
   <div id="paragraph_id"></div>
   <div id="unit_id"></div>
+  <div id="article_id"></div>
   <div id="notification_panel">
-    
+  <div class="reveal large" id="price_table" data-reveal>
+    {{price_table}}
+  </div>  
   </div>
-  <a><span id="goto_previous" style="display:none;"><h3>Вернуться</h3></span></a>
-  <span id="previous_page" style="display:none;"></span>
-  <span id="current_page" style="display:none;"></span>
   <div class="reveal" id="loading" data-reveal>
     <div class="progress" role="progressbar" tabindex="0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
       <div class="progress-meter" style="width:0;"></div>
     </div>
   </div>
 
-  <div class="large reveal" id="paragraph_content" data-reveal data-close-on-click="true" data-animation-in="fade-in" data-animation-out="fade-out">
-    {{greatings}}
+  <div class="small reveal" id="paragraph_content" data-reveal data-close-on-click="true" data-animation-in="fade-in" data-animation-out="fade-out">
+    {{article}}
   </div>
 
   <div id="backgroundimage" style="display:none;"></div>
   <div class="header">
-    <div id="page_head" class="large-12 small-12 columns" style="display:none;">
-        <div class="large-7 small-7 columns" style="overflow:hidden;">
-          <a id="mainpage" data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="На главную"><h1 id="page_text">тзк полихимстрой</h1></a>      
+    <div id="page_head" class="large-12 small-12 columns">
+
+        <div class="large-4 small-4 columns title_wrapper">
+          <div class="large-8 small-8 columns title_content">
+            <a href="/">
+              <button class="button secondary large" id="mainpage" type="button" title="Перейти на главную страницу">
+                тзк полихимстрой
+              </button>
+            </a>
+          </div>
         </div>
-        <div class="large-5 small-5 columns float-left" id="header_button_panel">
+
+        <div class="large-4 small-4 columns" style="height:100%;"></div>
+        <!-- <div class="large-4 small-4 columns rounder_wrapper">
+            <div class="large-9 small-9 columns rounder_wrapper line_one">
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '1' %} rounder_selected{% endif %}" title="Каталог химического сырья">
+                  <a href="/paragraph/1">
+                    <img src="/media/ico/хим.png" alt="Химическое сырье">
+                  </a>
+                </div>  
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '3' %} rounder_selected{% endif %}" title="Продукция для разметки дорог">
+                  <a href="/paragraph/3">
+                    
+                  </a>
+                </div>
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '6' %} rounder_selected{% endif %}" title="Перевозка грузов (транспортировка)">
+                  <a href="/paragraph/6">
+                    
+                  </a>
+                </div>
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '8' %} rounder_selected{% endif %}" title="Изделие из полипропилена">
+                  <a href="/paragraph/8">
+                    
+                  </a>
+                </div>
+              </div>
+            </div>
+        
+            <div class="large-9 small-9 columns rounder_wrapper line_two">
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '4' %} rounder_selected{% endif %}" title="Каталог автошампуней">
+                  <a href="/paragraph/4">
+                    <img src="/media/ico/ш.png" alt="Автошампунь">                    
+                  </a>
+                </div>  
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '2' %} rounder_selected{% endif %}" title="Бочки, кубовые ёмкости">
+                  <a href="/paragraph/2">
+                    
+                  </a>
+                </div>  
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '5' %} rounder_selected{% endif %}" title="Теплоноситель, антифриз, тосол">
+                  <a href="/paragraph/5">
+                    
+                  </a>
+                </div>
+              </div>
+              <div class="large-3 small-3 columns rounder_wrapper">
+                <div class="rounder{% if par_id == '7'%} rounder_selected{% endif %}" title="Собственная спецтехника">
+                  <a href="/paragraph/7">
+                    
+                  </a>
+                </div>  
+              </div>
+            </div>
+        
+         </div> -->
+
+
+
+        <div class="large-4 small-4 columns float-left" id="header_button_panel">
           <div class="large-12 small-12 columns" id="header_button_group">
             <div id="login_panel" class="large-3 small-3 columns header_button_elem" style="padding:0;">
               {{login_panel}}
             </div>
             <div class="large-3 small-3 columns header_button_elem">
-              <button class="button large secondary" id="search">Поиск</button>
+              <a href="/search" title="найти товар или услугу">
+                <button class="button large secondary" id="search" {% if page == 'search' %}style="height:200px;border:none;background-color:#000;"{% endif %}>Поиск</button>
+              </a>
             </div>
-            <div class="large-3 small-3 columns header_button_elem"><button class="button large secondary"  id="schema">Схема проезда</button></div>
-            <div class="large-3 small-3 columns header_button_elem"><button class="button large secondary" id="contact">Контакты</button></div>
+            <div class="large-3 small-3 columns header_button_elem">
+              <button class="button large secondary"  id="schema" title="Посмотреть расположение на карте">Схема проезда</button>
+            </div>
+            <div class="large-3 small-3 columns header_button_elem">
+              <a href="/contacts" title="Адрес организации, телефон, электронная почта">
+                <button class="button large secondary" id="contact" {% if page == 'contacts' %}style="height:200px;border:none;background-color:#000;"{% endif%}>Контакты</button>                
+              </a>
+            </div>
           </div>
         </div>
+
     </div>
   </div>
   <div class="row content">
     <div class="large-12 small-12 columns" id="precontent"></div>
-    <div id="maincontent" class="large-12 small-12 columns" style="display:none;">
-      {{paragraph_unit}}
+    <div id="maincontent" class="large-12 small-12 columns">
+      <br>
+      <br>
+      {{content}}
       <!-- {% block content %}
       {% endblock %} -->
-      <div class="large-12 small-12 colums float-left" style="height:100px;"></div>
+      <!-- <div class="large-12 small-12 colums float-left" style="height:100px;"></div> -->
     </div>
   </div>
   <script src="{% static 'js/jscolor.min.js'%}"></script>
   <!-- <script src="{% static 'js/vendor/foundation.reveal.js' %}"></script> -->
   <script src="{% static 'js/foundation/foundation.reveal.js' %}"></script>
-  <script src="{% static 'js/foundation/foundation.tooltip.js' %}"></script>
+  <!--<script src="{% static 'js/foundation/foundation.tooltip.js' %}"></script>-->
   <script src="{% static 'js/foundation/foundation.util.keyboard.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.box.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.triggers.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.mediaQuery.js' %}"></script>
   <script src="{% static 'js/foundation/foundation.util.motion.js' %}"></script>
+  <script src="{% static 'js/vendor/foundation.accordionMenu.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.accordion.js' %}"></script>
+  <script src="{% static 'js/foundation/foundation.orbit.js' %}"></script>
   <!-- <script src="{% static 'js/foundation.js' %}"></script> -->
   <!-- <script src="{% static 'js/vendor/foundation.magellan.js' %}"></script>
   <script src="{% static 'js/vendor/what-input.min.js' %}"></script>
@@ -126,7 +224,6 @@
   <script src="{% static 'js/foundation.reveal.js' %}"></script>
   <script src="{% static 'js/foundation.equalizer.js' %}"></script>
   <script src="{% static 'js/foundation.topbar.js' %}"></script>
-  <script src="{% static 'js/foundation.orbit.js' %}"></script>
   <script src="{% static 'js/foundation.magellan.js' %}"></script>
   <script src="{% static 'js/foundation.alert.js' %}"></script>
   <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>

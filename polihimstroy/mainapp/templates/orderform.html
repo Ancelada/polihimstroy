@@ -17,13 +17,13 @@
 	<input type="radio" name="method" value="телефон" id="telmethod" checked="checked"><label for="telmethod"><h6>телефон</h6></label>
 	<input type="radio" name="method" value="watsup" id="watsupmethod"><label for="watsupmethod"><h6>whatsapp</h6></label>
 </label>
-<label for="email">Э/почта
+<label for="email"><h5>Э/почта</h5>
 	<input type="text" id="email">
 </label>
 <label for="text"><h5>Текст заявки</h5>
-	<textarea id="text" cols="30" rows="10"></textarea>
+	<textarea id="text" cols="30" rows="5"></textarea>
 </label>
-<button class="large button" data-id="{{unit_id}}" id="submit_order">отправить</button>
+<button class="button large secondary" data-id="{{unit_id}}" id="submit_order">отправить</button>
 <script>
 	$('#paragraph_content').foundation();
 </script>

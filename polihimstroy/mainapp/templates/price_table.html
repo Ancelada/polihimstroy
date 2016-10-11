@@ -1,0 +1,27 @@
+<h2 class="text-center">Прейскурант</h3>
+<table>
+	<thead>
+		<tr>
+			<th width="250">Раздел</th>
+			<th>Наименование</th>
+			<th width="150"><a href="/paragraph/2" class="cyan">Закупка кубовыми ёмкостями, металлическими бочками</a></th>
+			<th width="150"><a href="/paragraph/6" class="cyan">Доставка в регионы</a></th>
+			<th width="150"><a href="/paragraph/7" class="cyan">Услуги по разгрузке/погрузке</a></th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for p in Paragraph %}
+			{% for unit in units %}
+				{% if unit.Paragraph_id == p.id%}
+					<tr>
+						<td><a href="/paragraph/{{p.id}}" class="cyan">{{p.Name}}</a></td>
+						<td><a href="/paragraph/{{p.id}}/unit/{{unit.id}}" class="cyan">{{unit.Name}}</a></td>
+						<td>{% if unit.CanBuyInCubes %}+{% endif %}</td>
+						<td>{% if unit.CanLoadUnload %}+{% endif %}</td>
+						<td>{% if unit.DeliveryInRegion %}+{% endif %}</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+	</tbody>
+</table>

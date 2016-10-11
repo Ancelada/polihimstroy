@@ -1,6 +1,12 @@
 $(document).ready(function(){
 	var par_id;
 	var unit_id;
+	var keyword;
+	
+	//если заметка (paragraph unit article), показываем её
+	if (typeof art != 'undefined'){
+		$('#paragraph_content').foundation('open');	
+	}
 
 	//history история
 	History.Adapter.bind(window, 'statechange', function(){
@@ -93,11 +99,25 @@ $(document).ready(function(){
 		makeAjax(parameters);
 	});
 
+	//посмотреть статью
+	$('.content').delegate('#article', 'click', function(){
+		parameters = {};
+		parameters['paragraph_id'] = parseInt($(this).attr('data-paragraph'));
+		parameters['unit_id'] = parseInt($(this).attr('data-unit'));
+		parameters['keyword_id'] = parseInt($(this).attr('data-keyword'));
+		parameters['article_id'] = parseInt($(this).attr('data-article'));
+		history.pushState({state:7}, 'article', '/paragraph/'+parameters['paragraph_id']+'/unit/'+parameters['unit_id']+'/article/'+parameters['article_id']);
+		parameters['method'] = 'get_article';
+		makeAjax(parameters);
+	});
+
 	//клик на unit
 	//переход на удовлетворяющий критерю unit
-	$('body').delegate('li#item_unit', 'click', function(){
+	$('.content').delegate('#item_unit a', 'click', function(){
 		par_id = $(this).attr('data-paragraph');
 		unit_id = $(this).attr('data-unit');
+		console.log(par_id);
+		console.log(unit_id);
 		history.pushState({state:2}, 'paragraph_unit', '/paragraph/'+par_id+'/unit/'+unit_id);
 		$('#paragraph_id').attr('data-id', par_id);
 		$('#unit_id').attr('data-id', unit_id);
@@ -115,26 +135,26 @@ $(document).ready(function(){
 	a = History.getState();
 	//если разлинковка = пусто, страница index
 	if (a.hash == "/"){
-		loadingIndex();
+		/*loadingIndex();*/
 	//если разлинковка = search, страница search
 	} else if (a.hash == '/search/'){
-		search();
+		/*search();*/
 	//если разлинковка = login, страница login
 	} else if (a.hash == "/login/") {
-		login();
+		/*login();*/
 	//если разлинковка = orders, страница orders
 	} else if (a.hash == "/orders/") {
-		orders();
+		/*orders();*/
 	//если разлинковка = contacts, страница contacts
 	} else if (a.hash == "/contacts") {
-		contacts();
+		/*contacts();*/
 	//eсли разлинковка = order_moderated, страница модерирование заказов
 	} else if (a.hash == '/order_moderated/'){
-		order_moderated();
+		/*order_moderated();*/
 	}
 
 	
-	loadingClose();
+	/*loadingClose();*/
 	var id;
 	//кнопка отправить пожелание и предложение
 	$('.content').delegate('#submit_getintouch', 'click', function(){
@@ -174,7 +194,7 @@ $(document).ready(function(){
 		$('#text').val('');
 		$('#e-mail').val('');
 		if (error == 0){
-			loadingOpen()
+			/*loadingOpen();*/
 			parameters = {};
 			parameters['method'] = 'getintouch';
 			parameters['name'] = name;
@@ -242,7 +262,7 @@ $(document).ready(function(){
 			error = 1;
 		}
 		if (error == 0){
-			loadingOpen();
+			/*loadingOpen();*/
 			parameters = {};
 			parameters['method'] = 'submit_transport_order';
 			parameters['name'] = name;
@@ -293,7 +313,7 @@ $(document).ready(function(){
 			error = 1;
 		}
 		if (error == 0){
-			loadingOpen();
+			/*loadingOpen();*/
 			parameters = {};
 			parameters['method'] = 'submit_order';
 			parameters['name'] = name;
@@ -343,6 +363,7 @@ $(document).ready(function(){
 			text = 'пустое поле пароль';
 			makeNotification('alert', header, text);
 		} else {
+			loadingOpen();
 			parameters = {};
 			parameters['method'] = 'trylogin';
 			parameters['username'] = username;
@@ -367,37 +388,43 @@ $(document).ready(function(){
 	}
 	//страница поиска
 	$('#search').on('click', function(){
-		search();
+		loadingOpen();
+		/*search();*/
 	});
 
 	//страница контакты
 	$('#contact').on('click', function(){
-		contacts();
+		loadingOpen();
+		/*contacts();*/
 	})
 
 	//страница заказов
 	$('#login_panel').delegate('#orders', 'click', function(){
-		orders();
+		loadingOpen();
+		/*orders();*/
 	});
 
 	//страница войти
 	$('#login_panel').delegate('#logbut', 'click', function(){
-		login();
+		loadingOpen();
+		/*login();*/
 	});
 
 	//страница модерирвать заявки
 	$('#login_panel').delegate('#order_moderated', 'click', function(){
-		order_moderated();
+		loadingOpen();
+		/*order_moderated();*/
 	});
 
 	//кнопка отправиться на предыдущую страницу
-	$('#goto_previous').on('click', function(){
+	/*$('#goto_previous').on('click', function(){
 		gotoPrevious();
-	})
+	})*/
 
 	//кнопка заголовок сайта, отправиться на главную страницу
 	$('#mainpage').on('click', function(){
-		loadingIndex();
+		loadingOpen();
+		/*loadingIndex();*/
 	});
 
 	/*$('#paragraph_content').foundation('open');*/
@@ -405,13 +432,14 @@ $(document).ready(function(){
 
 	//отобразить содержимое paragraph
 	$('.content').delegate('.a_paragraph_item', 'click', function(){
-		id = parseInt($(this).attr('data-id'));
+		loadingOpen();
+		/*id = parseInt($(this).attr('data-id'));
 		$('#paragraph_id').attr('data-id', id);
-		paragraphUnit(id);
+		paragraphUnit(id);*/
 	});
 
 	//наведение мыши на paragraph
-	var par_pos = 250;
+	/*var par_pos = 250;
 	$('.content').delegate('.a_paragraph_item', 'mouseenter', function(){
 		a = $(this).find('#paragraph_name');
 		a.animate({top: par_pos+25}, 200);
@@ -421,13 +449,12 @@ $(document).ready(function(){
 	$('.content').delegate('.a_paragraph_item', 'mouseleave', function(){
 		a = $(this).find('#paragraph_name');
 		a.animate({top: par_pos}, 200);
-	})
+	})*/
 
 	//если загрузился background
 	backgroundImageLoaded($('#backgroundimage'), function(){
-		loadingClose();
   		$('#backgroundimage').fadeIn(400);
-  		$('#page_head').show(400);
+  		/*$('#page_head').show(400);*/
 	});
 });
 
@@ -497,6 +524,24 @@ var orders = function(id){
 	makeAjax(parameters);
 }
 
+//загрузить страничку article
+var article = function(paragraph_id, unit_id, article_id){
+	//текущая страница как предидущая
+	updatePreviousCurrent('article');
+	//обновляем кнопку предидущая страница
+	updateGoToPrevious();
+	$('#maincontent').hide(400);
+	loadingOpen();
+	parameters = {};
+	parameters['paragraph_id'] = parseInt(paragraph_id);
+	parameters['unit_id'] = parseInt(unit_id);
+	parameters['article_id'] = parseInt(article_id);
+	parameters['method'] = 'article';
+	//записываем в url браузера
+	history.pushState({state:7}, 'article', '/paragraph/'+paragraph_id,+'/unit/'+unit_id+'/article/'+article_id);
+	makeAjax(parameters);
+}
+
 //загрузить страничку paragraph_unit _ unit
 var paragraphUnitUnit = function(par_id, unit_id){
 	//текущая страница как предидущая
@@ -509,7 +554,6 @@ var paragraphUnitUnit = function(par_id, unit_id){
 	parameters['par_id'] = parseInt(par_id);
 	parameters['unit_id'] = parseInt(unit_id);
 	parameters['method'] = 'paragraphunitunit';
-	console.log(parameters);
 	// записываем в url браузера
 	history.pushState({state:2}, 'paragraphunitunit', '/paragraph/'+par_id+'/unit/'+unit_id);
 	makeAjax(parameters);
@@ -539,11 +583,10 @@ var order_moderated = function(){
 	//обновляем кнопку предидущая страница
 	updateGoToPrevious();
 	$('#maincontent').hide(400);
-	loadingOpen();
 	parameters = {};
 	parameters['method'] = 'order_moderated';
 	// записываем в url браузера
-	history.pushState({state:5}, 'order_moderated', '/order_moderated');
+	history.pushState({state:6}, 'order_moderated', '/order_moderated');
 	makeAjax(parameters);
 }
 
@@ -609,6 +652,11 @@ var makeAjax = function(parameters){
     			$('#maincontent').html(data['string']);
     			$('#maincontent').show(400);
     			loadingClose();
+			//показать статья
+			} else if (parameters['method'] == 'get_article'){
+				$('#paragraph_content').html(data['string']);
+				$('#paragraph_content').foundation();
+				$('#paragraph_content').foundation('open');
 			//удалить модерированную заявку на сырье, транспорт, пожелание и предложение
 			} else if (parameters['method'] == 'delete_moderated'){
 				if (data['string'] == 'ok'){
@@ -660,6 +708,15 @@ var makeAjax = function(parameters){
 			//поиск по ключевому слову
 			} else if (parameters['method'] == 'searchkeyup'){
 				$('#result').html(data['string']);
+			//если article страница
+			} else if (parameters['method'] == 'article'){
+				console.log('asdfajd;l');
+				$('#maincontent').html(data['string']);
+				$('#maincontent').show(400);
+				loadingClose();
+				$('#paragraph_content').html(data['article']);
+				$('#paragraph_content').foundation();
+				$('#paragraph_content').foundation('open');
 			//если paragraph_unit unit страница
 			} else if (parameters['method'] == 'paragraphunitunit'){
 				$('#maincontent').html(data['string']);
@@ -683,8 +740,6 @@ var makeAjax = function(parameters){
 			//если страница модерирования заказов
 			} else if (parameters['method'] == 'order_moderated'){
 				$('#maincontent').html(data['string']);
-				loadingClose();
-				$('#maincontent').show(400);
     		//если основная страница
     		} else if (parameters['method'] == 'loadingindex'){
     			$('.content').html(data['string']);
@@ -706,7 +761,7 @@ var makeAjax = function(parameters){
     			$('#maincontent').show(400);
     		// если notification
     		} else if (parameters['method'] == 'notification'){
-    			loadingClose();
+    			/*loadingClose();*/
     			$('#notification_panel').append(data['string']);
 			// если trylogin
     		} else if (parameters['method'] == 'trylogin'){
@@ -716,7 +771,7 @@ var makeAjax = function(parameters){
     				header = 'уведомление';
     				text = 'выполнен вход';
     				makeNotification('success', header, text);
-    				orders();
+    				window.location = '/orders';
     			} else {
     				header = 'ошибка пользователя';
     				text = 'некорректное имя пользователя и пароль';
@@ -739,7 +794,7 @@ var makeAjax = function(parameters){
 				$('#paragraph_content').foundation('open');
 			// если отправить заявку на транспорт
 			} else if (parameters['method'] == 'submit_transport_order'){
-				loadingClose();
+				/*loadingClose();*/
 				$('#paragraph_content').foundation('close');
 				answer = data['string'];
 				if (answer == 'ok'){
@@ -753,7 +808,7 @@ var makeAjax = function(parameters){
     			}
 			// если отправить заявку
     		} else if (parameters['method'] == 'submit_order'){
-    			loadingClose();
+    			/*loadingClose();*/
     			$('#paragraph_content').foundation('close');
     			answer = data['string'];
     			if (answer == 'ok'){
@@ -767,7 +822,7 @@ var makeAjax = function(parameters){
     			}
 			// если оставить пожелание и предложение
 			} else if (parameters['method'] == 'getintouch'){
-				loadingClose();
+				/*loadingClose();*/
 				answer = data['string'];
 				if (answer == 'ok'){
 					header = 'уведомление';
@@ -809,5 +864,10 @@ gotoPrevious = function(){
 		par_id = parseInt($('#paragraph_id').attr('data-id'));
 		unit_id = parseInt($('#unit_id').attr('data-id'));
 		paragraphUnitUnit(par_id, unit_id);
+	} else if ($('#previous_page').html() == 'article'){
+		paragraph_id = parseInt($('#paragraph_id').attr('data-id'));
+		unit_id = parseInt($('#unit_id').attr('data-id'));
+		article_id = parseInt($('#article_id').attr('data-id'));
+		article(paragraph_id, unit_id, article_id);
 	}
 }

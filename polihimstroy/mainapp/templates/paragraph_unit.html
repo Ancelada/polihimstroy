@@ -1,19 +1,26 @@
-<h1 class="text-center">{{paragraph_name}}</h1>
+<h2 class="text-center">{{paragraph_name}}</h2>
 <ul class="accordion" data-accordion data-allow-all-closed="true">
 	{% for unit in units %}
-		<li class="accordion-item{% if unit.id == unit_id %} is-active{% endif %}" id="item_unit" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{par_id}}" data-unit="{{unit.id}}">
-			<a href="#" class="accordion-title"><h3 class="subheader text-center">{% if transport_flag %}{{paragraph_name}} {% endif %}{{unit.Name}}</h3></a>
+		<li class="accordion-item{% if unit.id == unit_id %} is-active{% endif %}" id="item_unit">
+			<a href="#" class="accordion-title" data-accordion-item data-id="{{unit.id}}" data-paragraph="{{par_id}}" data-unit="{{unit.id}}"><h3 class="subheader text-center">{% if transport_flag %}{{paragraph_name}} {% endif %}{{unit.Name}}</h3></a>
 			<div id="unit{{unit.id}}" class="accordion-content" data-tab-content>
-				<h4>{{unit.Name|upper}}</h4>
-				<h4>{{unit.Description|linebreaks}}</h4>
-				<h4>
+				<!-- <h4 style="text-transform:uppercase;">{{unit.Name}}</h4> -->
+				<h5>{{unit.Description|linebreaks}}</h5>
+				<hr>
+				<p>
 					{% for kw in unit_keywords %}
 						{% if kw.Unit_id == unit.id %}
-							<button class="small button secondary">{{kw.Name}}</button>
+							<button class="small button secondary" id="article" data-paragraph="{{par_id}}" data-unit="{{unit.id}}" data-keyword="{{kw.id}}" data-article="{% for article in articles %}{% if article.KeyWord_id == kw.id %}{{article.id}}{% endif %}{% endfor %}">{{kw.Name}}</button>
 						{% endif %}
 					{% endfor %}
-				</h4>
-				<button class="large button" id="makeorder" data-id="{{unit.id}}" data-transport="{{transport_flag}}">оставить заявку</button>
+				</p>
+				{% if par_id != '6' %}
+					<button class="button large" id="makeorder" data-id="{{unit.id}}" data-transport="{{transport_flag}}">оставить заявку на покупку</button>
+				{% else %}
+					<button class="button large" id="makeorder" data-id="{{unit.id}}" data-transport="{{transport_flag}}">оставить заявку</button>
+				{% endif%}
+				<hr>
+				<!-- <h5>Сопуствующие товары и услуги</h5> -->
 			</div>
 		</li>
 	{% endfor %}
@@ -25,6 +32,9 @@
     </ol>
 <div class="large-12 small-12 colums float-left" style="height:100px;"></div>
 <script>
+	{% if article %}
+		var art = 1;
+	{% endif %}
 	$('#maincontent').show(400);
 	$(window).load(function() {
         $('#joyRideTipContent').joyride({
@@ -33,5 +43,4 @@
 	        expose: true*/
 		});
 	});
-	$('#maincontent').foundation();
 </script>

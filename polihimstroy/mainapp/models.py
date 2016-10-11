@@ -28,6 +28,9 @@ class Unit(models.Model):
 	Name = models.CharField(max_length=200, null=True, blank=True)
 	Description = models.TextField(null=True, blank=True)
 	Paragraph = models.ForeignKey(Paragraph, on_delete=models.CASCADE)
+	CanBuyInCubes = models.NullBooleanField(blank=True, null=True)
+	DeliveryInRegion = models.NullBooleanField(blank=True, null=True)
+	CanLoadUnload = models.NullBooleanField(blank=True, null=True)
 	Eng = models.CharField(max_length=200, null=True, blank=True)
 	def __str__(self):
 		return self.Name.encode('utf-8')
@@ -172,5 +175,6 @@ class Article(models.Model):
 		db_table = 'Article'
 	Text = models.TextField(null=True, blank=True)
 	KeyWord = models.ForeignKey(KeyWord, null=True, on_delete=models.CASCADE)
+	OwnerUrl = models.URLField(max_length=200, null=True, blank=True)
 	def __str__(self):
 		return self.Text.encode('utf-8')

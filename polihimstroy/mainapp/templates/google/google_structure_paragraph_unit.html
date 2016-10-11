@@ -1,15 +1,17 @@
-{% for unit in units %}
-	{% if unit.id == unit_id %}
-		{
-			"@context": "http://schema.org",
-			"@type": "Product",
-			"name": "{{unit.Name}}",
-			"description" : "{{unit.Description}}",
-			"url": "http://polihimstroy.ru/paragraph/{{par_id}}/unit/{{unit.id}}",
-			"brand" : {
-				"@type" : "Brand",
-				"name" : "{{unit.Paragraph__Name}}"
+[
+	{% for unit in units %}
+		{% if unit.id == unit_id %}
+			{
+				"@context": "http://schema.org",
+				"@type": "Product",
+				"name": "{{unit.Name}}",
+				"description" : "{{unit.Description}}",
+				"url": "http://polihimstroy.ru/paragraph/{{par_id}}/unit/{{unit.id}}",
+				"brand" : {
+					"@type" : "Brand",
+					"name" : "{{unit.Paragraph__Name}}"
+				}
 			}
-		}
-	{% endif %}
-{% endfor %}
+		{% endif %}
+	{% endfor %}
+]

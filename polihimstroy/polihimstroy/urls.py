@@ -28,6 +28,8 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     url(r'^paragraph/(?P<paragraph>[0-9]+)$', views.paragraph),
     url(r'^paragraph/(?P<paragraph>[0-9]+)/unit/(?P<unit>[0-9]+)$', views.paragraph_unit),
+    url(r'^paragraph/(?P<paragraph>[0-9]+)/unit/(?P<unit>[0-9]+)/article/(?P<article>[0-9]+)$', \
+        views.article),
     url(r'^login/$', views.login),
     url(r'^orders/$', views.orders),
     url(r'^contacts$', views.contacts),

@@ -1,19 +1,51 @@
-{% for p in Paragraph %}
-	{% if forloop.last %}
-		{
-			"@context" : "http://schema.org",
-			"@type": "Product",
-			"name": "{{p.Name}}",
-			"image" : "http://polihimstroy.ru{{p.Image.url}}",
-			"url" : "http://polihimstroy.ru/paragraph/{{p.id}}"
-		}
-	{% else %}
-		{
-			"@context" : "http://schema.org",
-			"@type": "Product",
-			"name": "{{p.Name}}", 
-			"image" : "http://polihimstroy.ru{{p.Image.url}}",
-			"url" : "http://polihimstroy.ru/paragraph/{{p.id}}"
-		},
-	{% endif %}
-{% endfor %}
+[
+	{% for p in ld_json %}
+		{% if forloop.last %}
+			{
+				"@context": "http://schema.org",			
+				"@type": "ItemList",
+				"url": "{{p.url}}",
+				"itemListElement": [
+					{% for i in p.itemListElement %}
+						{% if forloop.last %}
+							{
+								"@type": "Product",
+								"url": "{{i.url}}",
+								"name": "{{i.name}}"
+							}
+						{% else %}
+							{
+								"@type": "Product",
+								"url": "{{i.url}}",
+								"name": "{{i.name}}"
+							},
+						{% endif %}
+					{% endfor %}
+				]
+			}
+		{% else %}
+			{
+				"@context": "http://schema.org",			
+				"@type": "ItemList",
+				"url": "{{p.url}}",
+				"itemListElement": [
+					{% for i in p.itemListElement %}
+						{% if forloop.last %}
+							{
+								"@type": "Product",
+								"url": "{{i.url}}",
+								"name": "{{i.name}}"
+							}
+						{% else %}
+							{
+								"@type": "Product",
+								"url": "{{i.url}}",
+								"name": "{{i.name}}"
+							},
+						{% endif %}
+					{% endfor %}
+				]
+			},
+		{% endif %}
+	{% endfor %}
+]

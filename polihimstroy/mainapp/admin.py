@@ -12,7 +12,8 @@ class KeyWordAdmin(admin.ModelAdmin):
 class ArticleAdmin(admin.ModelAdmin):
 	fieldsets = [
 		('Текст', {'fields': ['Text']}),
-		('Словосочетание', {'fields': ['KeyWord']})
+		('Словосочетание', {'fields': ['KeyWord']}),
+		('Источник', {'fields': ['OwnerUrl']})
 	]
 
 class ParagraphAdmin(admin.ModelAdmin):
@@ -31,7 +32,10 @@ class UnitAdmin(admin.ModelAdmin):
 		('Наименование', {'fields': ['Name']}),
 		('Описание', {'fields': ['Description']}),
 		('Параграф', {'fields': ['Paragraph']}),
-		('Транслит английского', {'fields': ['Eng']})
+		('Транслит английского', {'fields': ['Eng']}),
+		('Закупка кубовыми ёмкостями, бочками', {'fields': ['CanBuyInCubes']}),
+		('Доставка в регионы', {'fields': ['DeliveryInRegion']}),
+		('Услуги по разгрузке/погрузке', {'fields': ['CanLoadUnload']})
 	]
 
 class CustomerAdmin(admin.ModelAdmin):

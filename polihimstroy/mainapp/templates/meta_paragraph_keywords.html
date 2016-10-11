@@ -1,1 +1,1 @@
-{% for unit in units %}{{unit.Name}},{% endfor %}
+{% for unit in units %}{% if forloop.last %}{{unit.Name}} и другие товары и услуги.{% else %}{{unit.Name}},{% endif %}{% endfor %}
